@@ -1,0 +1,33 @@
+---
+title: Apigee Edge integration with Pivotal Cloud Foundry
+owner: Partners
+---
+
+<strong><%= modified_date %></strong>
+
+With Apigee Edge's integration with Pivotal Cloud Foundry (PCF), you can have access to full API management functionality between clients and your Cloud Foundry application. With a single command from the cf CLI, you can create a new Edge API proxy that is immediately ready to handle requests sent to an existing Cloud Foundry application. The presence of the proxy is seamless to your Cloud Foundry application.
+
+Once the API proxy is created, you can enhance it with more functionality and services, including:
+
+- Data transformation, mediation, orchestration, policies for rate limits, and so on.
+- Security, such as authentication and RBAC.
+- Onboarding, including a developer portal to enable self-service.
+- Analytics for monitoring and business metrics analysis.
+- Monetization for rate plans, internationalization, and usage tracking.
+
+## <a id="howitworks"></a>How it works
+
+Apigee Edge integrates with Pivotal Cloud Foundry through the Apigee Edge service broker. In Cloud Foundry, applications use service brokers to consume services such as load balancing and databases. With the Apigee Service Broker, you can create proxies to insert API management features in front of your Cloud Foundry applications.
+
+You install the service broker by installing the Apigee product tile. Once installed, the service broker is listed in the Cloud Foundry marketplace, along with other services. This makes using Apigee on your Cloud Foundry applications straightforward and simple.
+
+Using the service broker from the Cloud Foundry CLI, you can create an Apigee Edge proxy to handle requests sent from clients to your Cloud Foundry application.
+
+Once the proxy is created, through a binding that connects your Cloud Foundry app with the Edge proxy, the Cloud Foundry Go router forwards requests intended for your app to the proxy for management. After passing through the proxy, the request is sent back to the Go router, which now sends it on to your app.
+
+The following diagram illustrates how request data flows between your Edge proxies and Cloud Foundry application at run time.
+
+<br><%= image_tag('pivotal-diagram.png') %>
+
+
+ 

@@ -1,0 +1,26 @@
+---
+title: Getting started with Cloud Foundry integration
+owner: Partners
+---
+
+<strong><%= modified_date %></strong>
+
+The following topics walk you through the process of setting up and using the Apigee service broker. The steps here cover:
+
+- Install and configure the Apigee service broker
+
+ The Apigee service broker provides access to Apigee Edge from within a Cloud Foundry app. When installing it, you'll configure it with values for connecting to Apigee Edge.
+
+- Creating an Edge API proxy to manage client calls to your Cloud Foundry application
+
+ Use the Cloud Foundry CLI to proxy a sample Cloud Foundry application with an Apigee Edge API proxy.
+
+## <a id="prerequisites"></a>Prerequisites
+
+To use Apigee Edge with Cloud Foundry, you'll need the following:
+
+- An Apigee Edge account (Public Cloud or Private Cloud) with an organization where you can create API proxies. To create an Apigee Edge account, see Creating an Apigee Edge account. For more about organizations, see Organization structure.
+- A recent version of the cf command line interface. Your version must include required support for route-services operations. This integration works with v6.20.0.
+- A Pivotal Cloud Foundry Elastic Runtime 1.7 installation with Route Services enabled.
+- Node.js v4.x or later. Cloud Foundry includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
+- Apigee utility scripts to generate an authorization token. The service broker will create the (reverse) proxy on Apigee Edge for the app's route. This requires authenticating with Apigee Edge; ideally this is done with an authorization token, generated with scripts Apigee provides. Plain username and password may also be used if necessary.
