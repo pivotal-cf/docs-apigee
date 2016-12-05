@@ -5,13 +5,15 @@ owner: Partners
 
 <strong><%= modified_date %></strong>
 
-This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service Broker for PCF provides API management for applications running on PCF.
-
-The Apigee Edge Service Broker for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers create instances of the service plans using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to an application, creating an Apigee Edge API proxy that handles requests to that application. The proxy enables developers to manage their APIs through the Apigee Edge management console.
+This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service Broker for PCF enables developers to manage APIs for their PCF apps through the Apigee Edge management console.
 
 ## <a id='overview'></a>Overview
 
-The Apigee Edge Service Broker for PCF enables developers to use the Apigee Edge API management functionality to handle requests between clients and their PCF applications. 
+The Apigee Edge Service Broker for PCF registers a service broker with PCF and exposes its service plans on the Marketplace. Developers can then create service plan instances using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to their apps.
+
+Creating an Apigee Edge for PCF service instance and binding it to an app creates an Apigee Edge API proxy that handles requests for the app. This lets developers use the Apigee Edge management console to manage API request handling between clients and the app.
+
+## <a id='features'></a>Key Features
 
 After creating an Apigee Edge API proxy, developers can access the Apigee Edge management console to enhance the proxy with the following features:
 
@@ -21,18 +23,9 @@ After creating an Apigee Edge API proxy, developers can access the Apigee Edge m
 - Analytics for monitoring and business metrics analysis
 - Monetization for rate plans, internationalization, and usage tracking
 
-## <a id='getting-started'></a>Getting Started
-
-To begin using the Apigee Edge Service Broker, perform the procedures in the following topics:
-
-* [Installing and Configuring the Apigee Edge Service Broker for PCF](installing.html): Install and configure the Apigee Edge Service Broker for PCF tile to expose the Apigee Edge service plans on the Marketplace of your PCF deployment.
-* [Proxying a PCF Application with Apigee Edge](proxying.html): After installing and configuring the Apigee Edge Service Broker for PCF tile, developers can create and use an Apigee Edge API proxy to manage requests to their applications.
-
-For more information about how the Apigee Edge Service Broker for PCF integrates with PCF, see the [Architecture Overview](overview.html) topic.
-
 ## <a id='snapshot'></a>Product Snapshot
 
-Current Solace Messaging for Pivotal Cloud Foundry Details:
+Current Apigee Edge Service Broker for PCF Details:
 
 * **Version**: v2.0
 * **Release Date**: November 22, 2016
@@ -41,13 +34,22 @@ Current Solace Messaging for Pivotal Cloud Foundry Details:
 * **Compatible Elastic Runtime Version(s)**: 1.7.x, 1.8.x
 * **vSphere support?** Yes
 
+## <a id='getting-started'></a>Getting Started
+
+To begin using the Apigee Edge Service Broker, perform the procedures in the following topics:
+
+* [Installing and Configuring Apigee Edge for PCF](installing.html): Install and configure the Apigee Edge Service Broker for PCF tile to expose the Apigee Edge service plans on the Marketplace of your PCF deployment.
+* [Proxying a PCF App with Apigee Edge](proxying.html): After installing and configuring the Apigee Edge Service Broker for PCF tile, developers can create and use an Apigee Edge API proxy to manage requests to their applications.
+
+For more information about how the Apigee Edge Service Broker for PCF integrates with PCF, see the [Apigee Edge for PCF Architecture](overview.html) topic.
+
 ## <a id='prereqs'></a>Prerequisites
 
 The Apigee Edge Service Broker for PCF has the following prerequisites:
 
 * An Apigee Edge account (Public Cloud or Private Cloud) with an organization where API proxies can be created. To create an Edge account, see [Creating an Apigee Edge account](http://docs.apigee.com/api-services/content/creating-apigee-edge-account). For more information about Apigee organizations, see [Organization structure](http://docs.apigee.com/api-services/content/apigee-edge-organization-structure).
-* A PCF Elastic Runtime v1.7+ deployment with Route Services enabled
-* The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0+, which includes  support for `route-services` operations
+* A PCF Elastic Runtime v1.7+ deployment with Route Services enabled.
+* The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0+, which includes  support for `route-services` operations.
 * Node.js v4.x or later. PCF includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
 
 ## <a id='feedback'></a>Feedback
