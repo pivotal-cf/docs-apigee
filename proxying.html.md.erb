@@ -18,18 +18,20 @@ Perform the following steps to push a sample application to PCF.
 
 1. Change into the `sample-api` directory of the cloned repo:
     <pre class="terminal">$ cd pivotal-cf-apigee/sample-api</pre>
-1. In the `sample-api` directory, open `manifest.yml`.
-1. Edit `manifest.yml` to change the `name` and `host` properties to values specific to your deployment. See the following example:
-```
-  applications: 
-  - name: sample-api 
-    memory: 128M 
-    instances: 1 
-    host: sample-api-apigee 
-    path: . 
-    buildpack: nodejs_buildpack
-```
 
+1. In the `sample-api` directory, open `manifest.yml`.
+
+1. Edit `manifest.yml` to change the `name` and `host` properties to values specific to your deployment. See the following example:
+
+    ```
+    applications: 
+    - name: sample-api 
+      memory: 128M 
+      instances: 1 
+      host: sample-api-apigee 
+      path: . 
+      buildpack: nodejs_buildpack
+    ```
 1. Save the edited file.
 
 1. Set your API endpoint to the Cloud Controller of your deployment.
