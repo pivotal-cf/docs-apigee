@@ -116,17 +116,37 @@ Perform the following steps to bind the route of your app to your Apigee Edge se
 1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
     <pre class="terminal">$ ./get\_token</pre>  
     The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
-
-1. Use the `bind-route-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. This tells the Gorouter to redirect requests to the Apigee Edge proxy before sending them to the Cloud Foundry application.
+1. Use the `bind-route-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. This tells the Gorouter to redirect requests to the Apigee Edge proxy before sending them to the Cloud Foundry application. (See the reference on this page for more about this command.)
     <pre class="terminal">
-    $ cf bind-route-service cfapps.pivotal.io APIGEE-SERVICE --hostname SAMPLE-APP-APIGEE -c '{"org":"my_edge_org","env":"my_edge_env", "bearer":"'$(cat ~/.sso-cli/valid_token.dat)'", "action":"proxy bind"}'
+    $ cf bind-route-service cfapps.pivotal.io APIGEE-SERVICE --hostname SAMPLE-APP-APIGEE -c '{"org":"my_edge_org","env":"my_edge_env", "bearer":"'$(cat ~/.sso-cli/valid_token.dat)'", "action":"proxy bind", "protocol":"https"}'
     Binding route sample-api-apigee.cfapps.pivotal.io to service instance apigee-service in org apigee / space test as admin...
     OK
     </pre>
     * For APIGEE-SERVICE, use the name of the Apigee Edge service instance you created earlier
     * For SAMPLE-APP-APIGEE, use the name of the host you specified in your manifest.yml
  
- The output from `bind-route-services` should confirm that you have bound the route of your app to your Apigee Edge service instance.
+The output from `bind-route-service` should confirm that you have bound the route of your app to your Apigee Edge service instance.
+
+### bind-route-service reference
+When binding to an Apigee API proxy, the `bind-route-service` command follows this form (be sure to use quotes and command expansion, as shown here):
+    
+<pre class="terminal">
+$ cf bind-route-service YOUR-APP-DOMAIN SERVICE-INSTANCE [--hostname HOSTNAME] \
+-c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
+  "bearer":"'AUTHENTICATION-TOKEN-FILE'" | "basic":"ENCODED-USERNAME-PASSWORD" | "USERNAME:PASSWORD",
+  "action":"proxy"|"bind"|"proxy bind",
+  ["protocol":"http"|"https"]}'
+</pre>
+
+Parameters for the `-c` argument specify connection details:
+
+Parameter | Description | Allowed Values
+---- | ---- | ----
+`org` | Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in he `bearer` parameter)
+`env` | Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
+`bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's get_token command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text</li></ul>
+`action` | A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
+`protocol` | The protocol through which the proxy's target endpoint should be accessed by Cloud Foundry | `http` or `https`; default is `https`.
 
 ## <a id="test-binding"></a>Step 4: Test the Binding
 
