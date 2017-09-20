@@ -80,7 +80,9 @@ Perform the following steps to create an instance of the Apigee Edge service:
   * Use the `org` plan when proxying through Apigee Edge Cloud.
   * Use the `microgateway` plan when proxying through Apigee Edge Microgateway. The example below uses the `org` plan:
 
-    <pre class="terminal">$ cf create-service apigee-edge org YOUR-SERVICE-INSTANCE</pre>
+    <pre class="terminal">$ cf create-service apigee-edge org YOUR-SERVICE-INSTANCE -c \
+    '{"org":"YOUR-ORG", "env":"YOUR-ENV"}'
+cf service YOUR-SERVICE-INSTANCE</pre>
 
 1. Use the `cf service` command to display information about the service instance:
 
