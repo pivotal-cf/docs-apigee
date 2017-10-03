@@ -76,9 +76,7 @@ Perform the following steps to create an instance of the Apigee Edge service:
     apigee-edge      org, microgateway         Apigee Edge API Platform
     </pre>
 
-1. Create an instance of the Apigee Edge service. Select either the `org` or `microgateway` service plan.
-  * Use the `org` plan when proxying through Apigee Edge Cloud.
-  * Use the `microgateway` plan when proxying through Apigee Edge Microgateway. The example below uses the `org` plan:
+1. Create an instance of the Apigee Edge service. Select either the `org` service plan.
 
     <pre class="terminal">$ cf create-service apigee-edge org YOUR-SERVICE-INSTANCE -c \
     '{"org":"YOUR-ORG", "env":"YOUR-ENV"}'
@@ -110,8 +108,10 @@ cf service YOUR-SERVICE-INSTANCE</pre>
 Perform the following steps to bind the route of your app to your Apigee Edge service instance.
 
 1. Download the Apigee Edge scripts:
+
     <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
-1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your 
+1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your app.
+
     <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
 1. Create a `.sso-cli` directory in your user directory:
     <pre class="terminal">$ mkdir ~/.sso-cli</pre>
