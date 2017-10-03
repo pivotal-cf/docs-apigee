@@ -145,6 +145,7 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
 Perform the following steps to bind the route of your app to your Apigee Edge service instance.
 
 1. Download the Apigee Edge scripts:
+
     <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
 1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your 
     <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
@@ -153,7 +154,7 @@ Perform the following steps to bind the route of your app to your Apigee Edge se
 1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
     <pre class="terminal">$ ./get\_token</pre>  
     The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
-1. Use the `bind-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. This tells the Gorouter to redirect requests to the Apigee Edge proxy before sending them to the Cloud Foundry application. (See the reference on this page for more about this command.)
+1. Use the `bind-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. (See the reference on this page for more about this command.)
     <pre class="terminal">
     cf bind-service APP-NAME APIGEE-SERVICE \
     -c '{"org":MICROGATEWAY-ORG,"env":MICROGATEWAY-ENV,
@@ -166,15 +167,15 @@ Perform the following steps to bind the route of your app to your Apigee Edge se
       "target_port":CF-APP-PORT}'
     </pre>
     * For APIGEE-SERVICE, use the name of the Apigee Edge service instance you created earlier
-    * For SAMPLE-APP-APIGEE, use the name of the host you specified in your manifest.yml
+    * For APP-NAME, use the name of the host you specified in your manifest.yml
  
-The output from `bind-route-service` should confirm that you have bound the route of your app to your Apigee Edge service instance.
+The output from `bind-service` should confirm that you have bound the service to your Apigee Microgateway service instance.
 
 ### bind-service reference
 When binding to an Apigee API proxy, the `bind-route-service` command follows this form (be sure to use quotes and command expansion, as shown here):
     
 <pre class="terminal">
-$ cf bind-service YOUR-APP-NAME SERVICE-INSTANCE \
+$ cf bind-service APP-NAME SERVICE-INSTANCE \
     cf start APP-NAME
     -c '{"org":MICROGATEWAY-ORG,"env":MICROGATEWAY-ENV,
       "bearer":"'$(cat ~/.sso-cli/valid_token.dat)'", 

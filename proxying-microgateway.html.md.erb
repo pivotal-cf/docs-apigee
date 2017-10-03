@@ -1,0 +1,214 @@
+---
+title: Proxying a PCF App with Apigee Edge Microgateway ("microgateway" plan)
+owner: Partners
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to push a sample app to Pivotal Cloud Foundry (PCF), create an Apigee Edge service instance, and bind the application to it. After binding the application to the Apigee Edge service instance, requests to the app will be forwarded to an Apigee Edge API proxy for management.
+
+Before performing the procedures in this topic, you must [install and configure](installing.html) the Apigee Edge Service Broker for PCF tile.
+
+## <a id="push-sample"></a>Step 1: Push the Sample App
+
+Perform the following steps to push a sample application to PCF. 
+
+1. Clone the Apigee Edge GitHub repo:
+    <pre class="terminal">$ git clone <span>https:</span>//github.com/apigee/cloud-foundry-apigee.git</pre>
+
+1. Change to the `org-and-microgateway-sample` directory of the cloned repo:
+    <pre class="terminal">$ cd cloud-foundry-apigee/samples/org-and-microgateway-sample</pre>
+
+1. In the `org-and-microgateway-sample` directory, open `manifest.yml`.
+
+1. Edit `manifest.yml` to change the `name` and `host` properties to values specific to your deployment. See the following example:
+
+    ```
+    applications: 
+    - name: sample-api 
+      memory: 128M 
+      instances: 1 
+      host: sample-api-apigee 
+      path: . 
+      buildpack: nodejs_buildpack
+    ```
+1. Save the edited file.
+
+1. Set your API endpoint to the Cloud Controller of your deployment.
+  <pre class="terminal">
+  $ cf api api.YOUR-SYSTEM-DOMAIN
+  Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
+  OK
+  API endpoint:  <span>https:</span>//api.YOUR-SYSTEM-DOMAIN (API version: 2.59.0)
+  Not logged in. Use 'cf login' to log in.
+  </pre>
+
+1. Log in to your deployment and select an org and a space.
+  <pre class="terminal">
+  $ cf login
+  API endpoint: <span>https:</span>//api.YOUR-SYSTEM-DOMAIN
+  Email> user<span>@</span>example.com
+  Password>
+  </pre>
+
+1. Push the sample app to PCF:
+    <pre class="terminal">$ cf push YOUR-SAMPLE-APP</pre>
+
+1. Use `curl` to send a test request to the app you pushed:
+    <pre class="terminal">
+    $ curl YOUR-SAMPLE-APP.YOUR-SYSTEM-DOMAIN
+    {"hello":"hello from cf app"} 
+    </pre>
+    If you receive the above response, the sample app is running successfully.
+
+## <a id="create-instance"></a>Step 2: Create a Service Instance
+
+Perform the following steps to create an instance of the Apigee Edge service:
+
+1. List the Marketplace services and locate the Apigee Edge service:
+
+    <pre class="terminal">
+    $ cf marketplace
+    Getting services from marketplace in org example / space development as user<span>@</span>example.com...
+    OK
+
+    service          plans                     description
+    apigee-edge      org, microgateway, microgateway-coresident         Apigee Edge API Platform
+    </pre>
+
+1. Create an instance of the Apigee Edge service. Select the `microgateway` service plan to have Apigee Edge Microgateway run in a separate container from your Cloud Foundry app.
+
+    <pre class="terminal">$ cf create-service apigee-edge microgateway YOUR-SERVICE-INSTANCE -c \
+    '{"org":"YOUR-ORG", "env":"YOUR-ENV"}'</pre>
+
+1. Use the `cf service` command to display information about the service instance:
+
+    <pre class="terminal">
+    $ cf service apigee-service
+
+    Service instance: apigee-service
+    Service: apigee-edge
+    Bound apps:
+    Tags:
+    Plan: microgateway
+    Description: Apigee Edge API Platform
+    Documentation url: http://apigee.com/docs/
+    Dashboard: https://enterprise.apigee.com/platform/#/
+
+    Last Operation
+    Status: create succeeded
+    Message:
+    Started: 2016-10-27T20:47:43Z
+    Updated:
+    </pre>
+
+## <a name="install-microgateway"></a>Step 3: Install Apigee Edge Microgateway and Cloud Foundry app
+Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the same Cloud Foundry container.
+
+1. [Install and configure Apigee Edge Microgateway.](http://docs.apigee.com/microgateway/latest/installing-edge-microgateway)
+
+1. Locate and make any desired changes to the configuration YAML file created in your Apigee Edge Microgateway installation, typically in the .edgemicro directory.
+
+1. Clone the Apigee Microgateway Repo
+    <pre class="terminal">$ git clone https://github.com/apigee-internal/microgateway.git
+    cd microgateway
+    git checkout tags/v.2.5.4</pre>
+
+1. Copy the configuration file to the following directory in your Cloud Foundry app: `<application-folder>/<config-directory>`. 
+
+1. Edit the application manifest as follows:
+
+   1. Edit the following env values so that they correspond to your Apigee Edge Microgateway configuration:
+
+        ```yaml
+        env: 
+          EDGEMICRO_KEY: 'microgateway-key'
+          EDGEMICRO_SECRET: 'microgateway-secret'
+          EDGEMICRO_CONFIG_DIR: '/app/<config-directory>'
+          EDGEMICRO_ENV: 'your-microgateway-env-name'
+          EDGEMICRO_ORG: 'your-microgateway-org-name'
+        ```
+
+1. Push Apigee Microgateway as its own app.
+
+    <pre class="terminal">cf push</pre>
+
+## <a id="bind-app-route"></a>Step 4: Bind the App Route to the Service Instance
+
+Perform the following steps to bind the route of your app to your Apigee Edge service instance.
+
+1. Download the Apigee Edge scripts:
+
+    <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
+1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your app.
+
+    <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
+1. Create a `.sso-cli` directory in your user directory:
+
+    <pre class="terminal">$ mkdir ~/.sso-cli</pre>
+1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
+
+    <pre class="terminal">$ ./get\_token</pre>  
+    The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
+1. Use the `bind-route-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. (See the reference on this page for more about this command.)
+
+1. The proxy must be created as a separate step, and then loaded by Microgateway instances before binding. You can create the proxy manually, but to have the broker do it, specify “action”:“proxy”. Also specify the Microgateway’s FQDN as micro.
+
+    <pre class="terminal">$ cf bind-route-service YOUR-APP-DOMAIN APIGEE-SERVICE --hostname HOSTNAME \
+    -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
+        "bearer":"'AUTHENTICATION-TOKEN-FILE'",
+        "micro":"edgemicro-app.local.pcfdev.io",
+        "action":"proxy",
+        "protocol":"https"}'</pre>
+        
+    Cloud Foundry will report an error during the binding, since the bind was not attempted. But the message returned should indicate that the proxy was created, which you can check with the Edge management UI or API. The proxies created by the bind for Microgateway have an additional edgemicro_ at the beginning of their name, a general requirement unrelated to Cloud Foundry and service brokers.
+    
+    Wait for the configuration to reload on the Edge Microgateway instance(s) before binding. You might have to wait 5 to 10 minutes. When it has reloaded, the console will list the proxy you just created.
+    
+    To bind, make the same call with `"action":"bind"`:
+    
+    <pre class="terminal">$ cf bind-route-service YOUR-APP-DOMAIN APIGEE-SERVICE --hostname HOSTNAME \
+    -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
+        "bearer":"'AUTHENTICATION-TOKEN-FILE'",
+        "micro":"edgemicro-app.local.pcfdev.io",
+        "action":"bind"}'</pre>
+   
+For APIGEE-SERVICE, use the name of the Apigee Edge service instance you created earlier.
+
+For YOUR-APP-DOMAIN, use the name of the host you specified in your manifest.yml
+
+The proxies created by the bind for Microgateway have an additional edgemicro_ at the beginning of their name, a general requirement unrelated to Cloud Foundry and service brokers. Another general requirement is that the proxy is part of a published API Product; a change you must make manually by following [the instructions](http://docs.apigee.com/microgateway/latest/setting-and-configuring-edge-microgateway#Part2) to create a product with your newly created proxy.
+ 
+### bind-route-service reference
+Use the `bind-route-service` command to generate an API proxy on Apigee Edge and to bind the Apigee Cloud Foundry service to the proxy. The command this form (be sure to use quotes and command expansion, as shown here):
+    
+<pre class="terminal">
+$ cf bind-route-service YOUR-APP-DOMAIN SERVICE-INSTANCE [--hostname HOSTNAME] -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
+  "bearer":"'AUTHENTICATION-TOKEN-FILE'" | "basic":"ENCODED-USERNAME-PASSWORD" |
+  "USERNAME:PASSWORD", 
+  "action":"proxy"|"bind"|"proxy bind",
+  ["protocol":"http"|"https"]}'</pre>
+
+Parameters for the `-c` argument specify connection details:
+
+Parameter | Purpose | Allowed Values
+---- | ---- | ----
+`org` | Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in he `bearer` parameter).
+`env` | Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
+`bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's `get_token` command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text.</li></ul>
+`action` | A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy.
+`protocol` | The protocol through which the proxy's target endpoint should be accessed by Cloud Foundry. | `http` or `https`; default is `https`.
+
+## <a id="test-binding"></a>Step 5: Test the Binding
+
+Once you’ve bound your app’s path to the Apigee service (creating an Apigee proxy in the process), you can try it out with the sample app.
+
+1. From a command line run the curl command you ran earlier to make a request to your Cloud Foundry app you pushed, such as:
+
+    <pre class="terminal">
+    $ curl https://sample-api-apigee.cfapps.pivotal.io 
+        {“hello”:“hello from cf app”}</pre>
+
+    The console outputs the app’s response.
+
+The new proxy is just a pass-through, but it is now ready for you or someone on your team to add policies to define security, traffic management, and more.
