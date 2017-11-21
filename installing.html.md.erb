@@ -23,15 +23,15 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 
 1. Under **Custom Settings**, enter the appropriate values. See the following table for a description of each setting and the default values for users of Apigee Edge for Public Cloud.
 
-	 Setting | 	Description | Default for Public Cloud
-	------- | -------- | -------------------------------
+	Setting | Description | Default for Public Cloud
+	------- | ----------- | ------------------------
 	**Name for this configuration** | Choose a name that describes the configuration. | Default configuration
 	**Apigee Organization** | The Apigee Edge organization with proxies that will handle calls to your app. | 
 	**Apigee Environment** | The Apigee Edge environment that with proxies that will handle calls to your app. | 
 	**Dashboard URL** | The URL to the Apigee Edge management console, the UI where you develop and manage API proxies. | `https://enterprise.apigee.com/platform/#/`
 	**Apigee Management API URL** | The endpoint URL to the Apigee Edge management API. The Apigee Edge Service Broker uses this URL when making requests to create new Apigee Edge API proxies for managing requests to PCF apps. | `https://api.enterprise.apigee.com/v1`
 	**Apigee Proxy Domain** | The domain name that PCF apps use when making calls to your API proxy. | `apigee.net`
-	**Apigee Proxy Host Template** | The template that describes how the Apigee Edge host name should be generated. Pivotal Cloud Foundry apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the PCF app to the service instance of the Apigee Edge service. Typically, `org` and `env` represent your Apigee Edge organization and environment names, and `domain` represents the proxy domain you specify above. Parts of this value not formatted as placeholders will be taken to be literal.| `${org}-${env}.${domain}`
+	**Apigee Proxy Host Template** | ES6 template literal for generated proxy host. The template that describes how the Apigee Edge host name should be generated. <br/> This represents the hostname that clients use to make calls to your APIs. Change this value if your hostname is not created in the default way -- from your Apigee org an environment names. For example, if your APIs use a custom virtual host, you might have just a domain name:<br/>`${domain}`<br />Pivotal Cloud Foundry apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the PCF app to the service. (Note that without any placeholders, will be used as-is.)| `${org}-${env}.${domain}`
 	**Apigee Proxy Name Template** | The template that describes how to generate the name of your proxy when you create it from the cf CLI. | `cf-${route}`
 
 1. Click **Save**.

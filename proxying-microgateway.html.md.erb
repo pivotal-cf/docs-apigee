@@ -137,67 +137,101 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
 
 ## <a id="bind-app-route"></a>Step 4: Bind the App Route to the Service Instance
 
-Perform the following steps to bind the route of your app to your Apigee Edge service instance.
+In this step, you bind a Cloud Foundry app to the Apigee service instance you 
+created. The `apigee-bind-mg` command creates the proxy for you and binds the app to the service.   
 
-1. Download the Apigee Edge scripts:
+Each bind attempt requires authorization with Apigee Edge, with credentials 
+passed as additional parameters to the `apigee-bind-mg` command. You can pass 
+these credentials as arguments of the `apigee-bind-mg` command or by using a 
+bearer token.
 
-    <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
-1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your app.
+1. If you're using a bearer token to authenticate with Apigee Edge, get or 
+   update the token using the Apigee SSO CLI script. (If you're instead using 
+   command-line arguments to authenticate with username and password, specify 
+   the credentials in the next step.)
+    1. Download the Apigee Edge scripts:
 
-    <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
-1. Create a `.sso-cli` directory in your user directory:
+	    <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
+	1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your app.
 
-    <pre class="terminal">$ mkdir ~/.sso-cli</pre>
-1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
+	    <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
+	1. Create a `.sso-cli` directory in your user directory:
 
-    <pre class="terminal">$ ./get\_token</pre>  
-    The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
-1. Use the `bind-route-service` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. (See the reference on this page for more about this command.)
+	    <pre class="terminal">$ mkdir ~/.sso-cli</pre>
+	1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
 
-    The proxy must be created as a separate step, and then loaded by Microgateway instances before binding. You can create the proxy manually, but to have the broker do it, specify “action”:“proxy”. Also, specify the Microgateway’s FQDN as micro.
+	    <pre class="terminal">$ ./get\_token</pre>  
+	    The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
+1. Use the `apigee-bind-mg` command to create an Apigee Edge API proxy and bind your Cloud Foundry app to the proxy. (See the reference on this page for more about this command.)
 
-    <pre class="terminal">$ cf bind-route-service YOUR-APP-DOMAIN APIGEE-SERVICE --hostname HOSTNAME \
-    -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
-        "bearer":"'AUTHENTICATION-TOKEN-FILE'",
-        "micro":"edgemicro-app.local.pcfdev.io",
-        "action":"proxy",
-        "protocol":"https"}'</pre>
-        
-    Cloud Foundry will report an error during the binding, since the bind was not attempted. But the message returned should indicate that the proxy was created, which you can check with the Edge management UI or API. The proxies created by the bind for Microgateway have an additional edgemicro_ at the beginning of their name, a general requirement unrelated to Cloud Foundry and service brokers.
-    
-    Wait for the configuration to reload on the Edge Microgateway instance(s) before binding. You might have to wait 5 to 10 minutes. When it has reloaded, the console will list the proxy you just created.
-    
-    To bind, make the same call with `"action":"bind"`:
-    
-    <pre class="terminal">$ cf bind-route-service YOUR-APP-DOMAIN APIGEE-SERVICE --hostname HOSTNAME \
-    -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
-        "bearer":"'AUTHENTICATION-TOKEN-FILE'",
-        "micro":"edgemicro-app.local.pcfdev.io",
-        "action":"bind"}'</pre>
-    - For APIGEE-SERVICE, use the name of the Apigee Edge service instance you created earlier.
-    - For YOUR-APP-DOMAIN, use the name of the host you specified in your manifest.yml
+    You'll need to run the command twice: once to create the proxy, then again to  bind the service to the proxy. The proxy must be loaded by Microgateway instances before binding.
 
-The proxies created by the bind for Microgateway have an additional edgemicro_ at the beginning of their name, a general requirement unrelated to Cloud Foundry and service brokers. Another general requirement is that the proxy is part of a published API Product; a change you must make manually by following [the instructions](http://docs.apigee.com/microgateway/latest/setting-and-configuring-edge-microgateway#Part2) to create a product with your newly created proxy.
+    When you use the command without arguments, you'll be prompted for argument values. To use the command with arguments, see the command reference at the end of this topic. For help on the command, type `cf apigee-bind-mg -h`. Without arguments, you'll be prompted for the following:
+
+    Argument | Description
+    --- | ---
+    Apigee username | Apigee user name. Not used if you pass a bearer token with the `--bearer` argument.
+    Apigee password | Apigee password. Not used if you pass a bearer token with the `--bearer` argument.
+    Action to take | Required. `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
+    Apigee environment | Required. The Apigee environment where your proxy should be deployed.
+    Apigee organization | Required. The Apigee organization where your proxy should be created.
+    Application to bind to | Required. Name of the the Cloud Foundry application to bind to.
+    Domain to bind to | Required. Domain of the application to bind to.
+    Route of the application acting as microgateway | Required. Route of the application acting as Edge Microgateway.
+    Target application protocol | Optional. The application protocol, such as http or https.
+    Service instance name to bind to | Required. Name of the Apigee service to bind to.
+
+	1. First, create the proxy. When prompted for the action to take, enter `proxy`.
+
+	    <pre class="terminal">$ cf apigee-bind-mg</pre>
+	
+	    The command creates an API proxy on the specified Apigee org and environment, then binds the Apigee service to the target app. The protocol parameter specifies the protocol through which the proxy's target endpoint will be called. To do its work, this command authenticates with Apigee Edge using the credentials you specified.  
+
+	    Cloud Foundry will report an error because the bind was not attempted. But the message returned should indicate that the proxy was created, which you can check with the Edge management UI or API. The proxies created by the bind for Microgateway have an additional edgemicro_ at the beginning of their name, a general requirement unrelated to Cloud Foundry and service brokers.  
+
+	    Wait for the configuration to reload on the Edge Microgateway instance(s) before binding. You might have to wait 5 to 10 minutes. When it has reloaded, the console will list the proxy you just created.
+
+	1. Next, bind the service to the proxy by running the command again. This time, for the action, specify bind for the `action` argument.
+
+	    <pre class="terminal">$ cf apigee-bind-mg</pre>
+
+	    The proxy is part of a published API Product; a change you must make manually by following the instructions [here](http://docs.apigee.com/microgateway/latest/setting-and-configuring-edge-microgateway#Part2) to create a product with your newly created proxy.
  
-### bind-route-service reference
-Use the `bind-route-service` command to generate an API proxy on Apigee Edge and to bind the Apigee Cloud Foundry service to the proxy. The command takes this form (be sure to use quotes and command expansion, as shown here):
-    
-<pre class="terminal">
-$ cf bind-route-service YOUR-APP-DOMAIN SERVICE-INSTANCE [--hostname HOSTNAME] -c '{"org":"YOUR-EDGE-ORG","env":"YOUR-EDGE-ENV",
-  "bearer":"'AUTHENTICATION-TOKEN-FILE'" | "basic":"ENCODED-USERNAME-PASSWORD" |
-  "USERNAME:PASSWORD", 
-  "action":"proxy"|"bind"|"proxy bind",
-  ["protocol":"http"|"https"]}'</pre>
+### apigee-bind-mg reference
 
-Parameters for the `-c` argument specify connection details:
+Use the apigee-bind-mg command to generate an API proxy on Apigee Edge and to bind the Cloud Foundry service to the proxy.   
+
+The command requires your Apigee Edge credentials in order to create and bind to an API proxy. You can specify credentials either with a bearer token or by giving a username and password at the command line. To use a token, you must provide the --bearer argument.
+
+To be prompted for argument values (and provide a username and password at prompts), use the command without arguments.  
+
+<pre class="terminal">$ cf apigee-bind-mg</pre>
+
+To specify arguments on the command line, use the following syntax (be sure to 
+use quotes and command expansion, as shown here):
+
+```bash
+$ cf apigee-bind-mg [--app APP_NAME] [--service SERVICE_INSTANCE] \
+   [--apigee_org APIGEE_ORGANIZATION] [--apigee_env APIGEE_ENVIRONMENT] \
+   [--micro MICROGATEWAY_APP_ROUTE] [--protocol TARGET_APP_PROTOCOL] 
+   [--domain APP_DOMAIN] [--action ACTION] \
+   [--user APIGEE_USERNAME] [--pass APIGEE_PASSWORD] \
+   [--bearer APIGEE_BEARER_TOKEN]
+```
 
 Parameter | Purpose | Allowed Values
 ---- | ---- | ----
-`org` | Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in he `bearer` parameter).
-`env` | Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
-`bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's `get_token` command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text.</li></ul>
-`action` | A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy.
-`protocol` | The protocol through which the proxy's target endpoint should be accessed by Cloud Foundry. | `http` or `https`; default is `https`.
+`action` | Required. A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
+`apigee_env` | Required. Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
+`apigee_org` | Required. Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in the `bearer` parameter)
+`app` | Required. Name of the the Cloud Foundry application to bind to. | The app name.
+`bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's get_token command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text</li></ul>
+`domain` | Required. Domain of the application to bind to. | 
+`micro` | Required. Route of the application acting as Edge Microgateway. | Required.
+`pass` | Apigee password. Not used if you pass a bearer token with the --bearer argument. | Your password.
+`protocol` | The protocol through which the proxy should be accessed by Cloud Foundry | `http` or `https`; default is `https`.
+`service` | Required. Name of the Apigee service to bind to. | The service name.
+`user` | Apigee user name. Not used if you pass a bearer token with the --bearer argument. | Your user name.
 
 ## <a id="test-binding"></a>Step 5: Test the Binding
 
