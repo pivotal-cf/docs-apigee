@@ -134,7 +134,16 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
 
 1. Push the Cloud Foundry app to your Cloud Foundry container.
     <pre class="terminal">
-    cf push &lt;cf-app-name> --no-start</pre>
+    cf apigee-push &lt;cf-app-name> --no-start</pre>
+    
+    You'll be prompted for the following:
+
+    Argument | Description
+    --- | ---
+    Plan type confirmation | Specify whether you're using the microgateway-coresident plan.
+    Path to your Java archive | If your app is a Java app, specify the path to its .jar file.
+    Path to the configuration directory with Microgateway .yaml file | Location of your Apigee Microgateway configuration directory.
+    Path to the configuration directory with custom plugins | Location of your Apigee Microgateway plugins directory.
 
 ## <a id="bind-app-route"></a>Step 3: Bind the Cloud Foundry app to the Service Instance
 
