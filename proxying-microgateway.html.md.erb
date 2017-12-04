@@ -65,7 +65,37 @@ Perform the following steps to push a sample application to PCF.
     </pre>
     If you receive the above response, the sample app is running successfully.
 
-## <a id="create-instance"></a>Step 2: Create a Service Instance
+## <a name="instance"></a>Step 2: Install the plugin
+
+1. Install the Apigee Broker Plugin as follows.
+    <pre class="terminal">
+    $ cf install-plugin -r CF-Community "apigee-broker-plugin"                                                                                                                                 
+    Searching CF-Community for plugin apigee-broker-plugin...
+    Plugin apigee-broker-plugin 0.1.1 found in: CF-Community
+    Attention: Plugins are binaries written by potentially untrusted authors.
+    Install and use plugins at your own risk.
+    Do you want to install the plugin apigee-broker-plugin? [yN]: y
+    Starting download of plugin binary from repository CF-Community...
+    7.85 MiB / 7.85 MiB [===========================================================================================================================================================================================================================================] 100.00% 11s
+    Installing plugin Apigee-Broker-Plugin...
+    OK
+    Plugin Apigee-Broker-Plugin 0.1.1 successfully installed.
+    </pre>
+
+1. Make sure the plugin is available by running the following command:
+
+    <pre class="terminal">
+    $ cf -h
+    …
+    Commands offered by installed plugins:
+      apigee-bind-mg,abm      apigee-unbind-mgc,auc    enable-diego
+      apigee-bind-mgc,abc     apigee-unbind-org,auo    has-diego-enabled
+      apigee-bind-org,abo     dea-apps                 migrate-apps
+      apigee-push,ap          diego-apps               dev,pcfdev
+      apigee-unbind-mg,aum    disable-diego
+    </pre>
+
+## <a id="create-instance"></a>Step 3: Create a Service Instance
 
 Perform the following steps to create an instance of the Apigee Edge service:
 
@@ -106,7 +136,7 @@ Perform the following steps to create an instance of the Apigee Edge service:
     Updated:
     </pre>
 
-## <a name="install-microgateway"></a>Step 3: Install Apigee Edge Microgateway and Cloud Foundry app
+## <a name="install-microgateway"></a>Step 4: Install Apigee Edge Microgateway and Cloud Foundry app
 Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the same Cloud Foundry container.
 
 1. [Install and configure Apigee Edge Microgateway.](http://docs.apigee.com/microgateway/latest/installing-edge-microgateway)
@@ -137,7 +167,7 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
 
     <pre class="terminal">cf push</pre>
 
-## <a id="bind-app-route"></a>Step 4: Bind the App Route to the Service Instance
+## <a id="bind-app-route"></a>Step 5: Bind the App Route to the Service Instance
 
 In this step, you bind a Cloud Foundry app to the Apigee service instance you 
 created. The `apigee-bind-mg` command creates the proxy for you and binds the app to the service.   
