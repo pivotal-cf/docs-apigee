@@ -5,13 +5,26 @@ owner: Partners
 
 <strong><%= modified_date %></strong>
 
-This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service Broker for PCF enables developers to manage APIs for their PCF apps through the Apigee Edge management console.
+This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service Broker for PCF enables developers to proxy APIs for their PCF apps.
+
+<p class="note warning"><strong>WARNING:</strong> Apigee Edge Service Broker for PCF v3.0.0 Beta is not intended for production use.
+   For production use, Apigee recommends Apigee Edge Service Broker for PCF v2.1.1.</p>
 
 ## <a id='overview'></a>Overview
 
-The Apigee Edge Service Broker for PCF registers a service broker with PCF and exposes its service plans on the Marketplace. Developers can then create service plan instances using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to their apps.
+The Apigee Edge Service Broker for PCF registers a service broker with PCF and exposes its service plans on the Marketplace. Using the service broker, you can create service plan instances using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to their apps. Creating an Apigee service instance and binding it to an app creates an API proxy that handles requests for the PCF app.
 
-Creating an Apigee Edge for PCF service instance and binding it to an app creates an Apigee Edge API proxy that handles requests for the app. This lets developers use the Apigee Edge management console to manage API request handling between clients and the app.
+Through the service broker, you can proxy calls to your PCF app with one of two varieties of Apigee Edge:
+
+- Apigee Edge Public Cloud
+
+    Calls to your PCF app are routed first through proxies you create on [Apigee Edge](http://docs.apigee.com/api-services/content/what-apigee-edge) Public Cloud. You can use the Apigee Edge management console to configure API request handling between clients and your PCF app.
+    
+- Apigee Edge Microgateway
+
+    Calls to your PCF app are routed first through proxies exposed by [Apigee Edge Microgateway](http://docs.apigee.com/microgateway/latest/overview-edge-microgateway). When you use Apigee Edge Microgateway, you can specify whether you want the Microgateway instance and your PCF app to run in the same or separate Cloud Foundry containers.
+    
+See [Getting Started](#getting-started) for more about each option.
 
 ## <a id='features'></a>Key Features
 
@@ -32,23 +45,23 @@ The following table provides version and version-support information about Apige
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td>v2.1.1</td>
+        <td>v3.0.0</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>September 8, 2017</td>
+        <td>December 5, 2017</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>Apigee Edge Service Broker for PCF v2.1.1</td>
+        <td>Apigee Edge Service Broker for PCF v3.0.0</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.7 to v1.11</td>
+        <td>v1.7 to v1.12</td>
     </tr>
     <tr>
         <td>Compatible Elastic Runtime version(s)</td>
-        <td>v1.7 to v1.11</td>
+        <td>v1.7 to v1.12</td>
     </tr>
     <tr>
         <td>IaaS support</td>
@@ -60,16 +73,23 @@ The following table provides version and version-support information about Apige
 
 To begin using the Apigee Edge Service Broker, perform the procedures in the following topics:
 
-* [Installing and Configuring Apigee Edge for PCF](installing.html): Install and configure the Apigee Edge Service Broker for PCF tile to expose the Apigee Edge service plans on the Marketplace of your PCF deployment.
-* [Proxying a PCF App with Apigee Edge](proxying.html): After installing and configuring the Apigee Edge Service Broker for PCF tile, developers can create and use an Apigee Edge API proxy to manage requests to their applications.
+1. [Installing and Configuring Apigee Edge for PCF](installing.html): Install and configure the Apigee Edge Service Broker for PCF tile to expose the Apigee Edge service plans on the Marketplace of your PCF deployment.
+1. Choose an Apigee Edge product type and service plan to use. 
 
-For more information about how the Apigee Edge Service Broker for PCF integrates with PCF, see the [Apigee Edge for PCF Architecture](overview.html) topic.
+    When creating an instance of the Apigee service, you specify one of the following service plans. Each has its own benefits.
+
+    Apigee Product | Service Plan | Description
+    ---- | ---- | ----
+    Apigee Edge Public Cloud | `org` | Calls to your PCF app will be routed through a proxy in your Apigee Edge organization. For more on getting started, see [Proxying a PCF App with Apigee Edge ("org" plan)](proxying-org.html).
+    Apigee Edge Microgateway (same container) | `microgateway-coresident` | Calls to your PCF app will be routed through a proxy in an instance of Apigee Edge Microgateway running in the same Cloud Foundry container as your PCF app. For more on getting started, see [Proxying a PCF App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html).
+    Apigee Edge Microgateway (separate containers) | `microgateway` | Calls to your PCF app will be routed through a proxy in an instance of Apigee Edge Microgateway running in a separate Cloud Foundry container from your PCF app. For more on getting started, see [Proxying a PCF App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html).
 
 ## <a id='prereqs'></a>Prerequisites
 
 The Apigee Edge Service Broker for PCF has the following prerequisites:
 
 * An Apigee Edge account (Public Cloud or Private Cloud) with an organization where API proxies can be created. To create an Edge account, see [Creating an Apigee Edge account](http://docs.apigee.com/api-services/content/creating-apigee-edge-account). For more information about Apigee organizations, see [Organization structure](http://docs.apigee.com/api-services/content/apigee-edge-organization-structure).
+* Apigee Edge Microgateway, depending on the service plan you're using.
 * A PCF Elastic Runtime (version 1.7 to 1.11) deployment with Route Services enabled.
 * The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0+, which includes  support for `route-services` operations.
 * Node.js v4.x or later. PCF includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
