@@ -138,28 +138,65 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
         ```
 
 1. Copy any custom plugins’ root folders (with custom plugin specific package.json and index.js in the respective root folder) into the following directory in your Cloud Foundry app: <application-folder>/<plugin-directory>. 
-1. Edit the application manifest as follows:
-
-    1. Edit the following env values so that they correspond to your Apigee Edge Microgateway configuration:
-
+1. Complete plugin configuration in one of two ways:
+    - Configure the plugins via the app manifest to include the APIGEE_MICROGATEWAY_CUSTOM environment variable. For example:
+	
         ```yaml
-        env: 
-          APIGEE_MICROGATEWAY_CONFIG_DIR: '/app/<config-directory>'
-          APIGEE_MICROGATEWAY_ENV: 'your-microgateway-env-name'
-          APIGEE_MICROGATEWAY_ORG: 'your-microgateway-org-name'
+        env:
+        ...
+        APIGEE_MICROGATEWAY_CONFIG_DIR: config
+        APIGEE_MICROGATEWAY_CUST_PLUGINS: plugins
+        APIGEE_MICROGATEWAY_PROCESSES: 2
+        APIGEE_MICROGATEWAY_CUSTOM: |
+                                    {"policies":
+                                    {
+                                    "oauth":
+                                        {
+                                        "allowNoAuthorization": false, 
+                                        "allowInvalidAuthorization": false
+                                        },
+                                    "spikearrest": 
+                                        {
+                                        "timeUnit": "minute", 
+                                        "allow": 10
+                                        }
+                                    },
+                                    "sequence": ["oauth", "spikearrest"]
+                                    }
         ```
-    1. Remove the following or any other `buildpack` tags from the manifest:
-      
+
+        Variable | Description
+        ---- | ----
+        `APIGEE_MICROGATEWAY_CONFIG_DIR` | Location of your Apigee Microgateway configuration directory.
+        `APIGEE_MICROGATEWAY_CUST_PLUGINS` | Location of your Apigee Microgateway plugins directory.
+        `APIGEE_MICROGATEWAY_PROCESSES` | The number of child processes that Apigee Microgateway should start. If your Microgateway performance is poor, setting this value higher might improve it.
+        `APIGEE_MICROGATEWAY_CUSTOM` | “sequence” corresponds to the sequence order in the microgateway yaml file (this will be added on to the end of any current sequence in the microgateway yaml file with duplicates removed).<br/><br/>“policies” correspond to any specific configuration needed by a plugin; for instance, “oauth” has the ‘"allowNoAuthorization": true configuration. These policies will overwrite any existing policies in the microgateway yaml file and add any that do not yet exist.
+    - Configure the microgateway yaml file from step 2 to include the necessary plugins. For example if we added a “spikearrest” plugin:
+        ```yaml
+        ...
+        plugins:
+            dir: ../plugins
+            sequence:
+              - oauth
+              - spikearrest
+        spikearrest:
+          timeUnit: minute
+          allow: 10
+        oauth:
+          allowNoAuthorization: false
+          allowInvalidAuthorization: false
+        ```
+1. Copy any custom plugins’ root folders (with custom plugin specific package.json and index.js in the respective root folder) into the following directory in your Cloud Foundry app: `<application-folder>/<plugin-directory>`. 
+    1. Remove the following or any other ``buildpack`` tags from the manifest:  
         ```yaml
         buildpack: nodejs_buildpack
         ```
-
-    1. If you have custom buildpacks, add the following line to the `env` section:
-
+    1. If you have custom buildpacks, add the following line to the “env” section:
+	
         ```yaml
-        env: 
-        ...
-        APIGEE_MICROGATEWAY_CUST_PLUGINS: '<plugin-directory>'
+        env:
+          ...
+          APIGEE_MICROGATEWAY_CUST_PLUGINS: '<plugin-directory>'
         ```
 
 1. Ensure that your Cloud Foundry app isn't running on port 8080, nor on the port specified by the PORT environment variable.
@@ -271,7 +308,6 @@ Parameter | Purpose | Allowed Values
 `bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's get_token command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text</li></ul>
 `edgemicro_key` | The key for your Apigee Edge Microgateway configuration (returned when you configured the Apigee Microgateway). | The configuration key.
 `edgemicro_secret` | The secret for your Apigee Edge Microgateway configuration (returned when you configured the Apigee Microgateway). | The configuration secret.
-`host` | Optional. The host domain to which API calls are made. Specify a value only if your host domain is not the same as that given by your virtual host. | Your host domain name if different from your virtual host domain. For example: `mycompany.net:9000`
 `pass` | Apigee password. Not used if you pass a bearer token with the --bearer argument. | Your password.
 `service` | Name of the Apigee service to bind to. | The service name.
 `target_app_port` | Port for your Cloud Foundry app. This may not be 8080 nor the PORT environment variable. | The port number.
