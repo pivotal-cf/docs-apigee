@@ -119,6 +119,13 @@ Here, you install Apigee Edge Microgateway and your Cloud Foundry app to the sam
                                     "sequence": ["oauth", "spikearrest"]
                                     }
         ```
+        To support Cloud Foundry application health check, make sure the `sequence` property includes a reference to the `healthcheck` plugin, as shown here. For more on health check, see [Using Application Health Checks](https://docs.cloudfoundry.org/devguide/deploy-apps/healthchecks.html).
+
+          ```yaml
+          "sequence": ["healthcheck", "oauth", "spikearrest"]
+          ```
+
+        The following describes the manifest properties:
 
         Variable | Description
         ---- | ----
