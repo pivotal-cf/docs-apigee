@@ -58,19 +58,15 @@ The following table provides version and version-support information about Apige
         <td>v1.7 to v1.12</td>
     </tr>
     <tr>
-        <td>Compatible Elastic Runtime version(s)</td>
-        <td>v1.7 to v1.12</td>
-    </tr>
-    <tr>
-        <td>Compatible Pivotal Application Services (PAS)* version(s)</td>
-        <td>v2.0.0</td>
+        <td>Compatible Pivotal Application Service (formerly known as Elastic Runtime) version(s)</td>
+        <td>v1.7.x to 2.0.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
         <td>vSphere</td>
     </tr>
 </table>
-\* As of PCF v2.0, <em>Elastic Runtime</em> is renamed <em>Pivotal Application Service (PAS)</em>. If your tile supports PCF 2.0, it will use PAS, not Elastic Runtime.
+\* As of PCF v2.0, <em>Elastic Runtime</em> is renamed <em>Pivotal Application Service (PAS)</em>. 
 
 ## <a id='getting-started'></a>Getting Started
 
@@ -93,7 +89,8 @@ The Apigee Edge Service Broker for PCF has the following prerequisites:
 
 * An Apigee Edge account (Public Cloud or Private Cloud) with an organization where API proxies can be created. To create an Edge account, see [Creating an Apigee Edge account](http://docs.apigee.com/api-services/content/creating-apigee-edge-account). For more information about Apigee organizations, see [Organization structure](http://docs.apigee.com/api-services/content/apigee-edge-organization-structure).
 * Apigee Edge Microgateway, depending on the service plan you're using.
-* A PCF Elastic Runtime (version 1.7 to 1.11) deployment with Route Services enabled.
+* A PCF Elastic Runtime (version 1.7 to 1.12) deployment with Route Services enabled.
+* A PAS Pivotal Application Services deployment for PCF version 2.0.0 or greater with Route Services enabled.
 * The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0+, which includes  support for `route-services` operations.
 * Node.js v4.x or later. PCF includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
 
