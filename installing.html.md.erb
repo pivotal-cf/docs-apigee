@@ -35,24 +35,24 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 	**Apigee Proxy Name Template** | The template that describes how to generate the name of your proxy when you create it from the cf CLI. | `cf-${route}`
 
 1. Click **Save**.
+
 1. If you have your own npm registry that the service broker should use to install, click **NPM Configuration** in the **Settings** tab.
 ![Apigee Edge NPM configuration](images/apigee-npm-config.png)
+
 1. On the NPM configuration page, enter the following values:
 
 	Setting | Description | Default for Public Cloud
 	------- | ----------- | ------------------------
 	**npm registry URL** | The base URL of the npm package registry. | 
-	**npm registry client certificate** | A client certificate to pass when accessing the registry. Values should be in PEM format (or on Windows, "Base-64 encoded X.509 (.CER)"). Replace newlines with the string "\n". For example:
-    `cert="-----BEGIN CERTIFICATE-----\nXXXX\nXXXX\n-----END CERTIFICATE-----"`
-    This is not the path to a certificate file. | 
-	**npm registry client key** | A client key to pass when accessing the registry. Values should be in PEM format with newlines replaced by the string "\n". For example:
-    `key="-----BEGIN PRIVATE KEY-----\nXXXX\nXXXX\n-----END PRIVATE KEY-----"'
-    It is not the path to a key file (and there is no "keyfile" option). | 
+	**npm registry client certificate** | A client certificate to pass when accessing the registry. Values should be in PEM format (or on Windows, "Base-64 encoded X.509 (.CER)"). Replace newlines with the string "\n". For example:<br /> `cert="-----BEGIN CERTIFICATE-----\nXXXX\nXXXX\n-----END CERTIFICATE-----"` <br />This is not the path to a certificate file. |
+	**npm registry client key** | A client key to pass when accessing the registry. Values should be in PEM format with newlines replaced by the string "\n". For example:<br /> `key="-----BEGIN PRIVATE KEY-----\nXXXX\nXXXX\n-----END PRIVATE KEY-----"` <br />It is not the path to a key file (and there is no "keyfile" option). | 
 	**Use strict-ssl** | `true` to do SSL key validation when making requests to the registry via HTTPS. | Selected (`true`).
 
 1. Click **Save**.
+
 1. If you have a proxy server or firewall for calls from the service broker, click **HTTP(S) Proxy** in the **Settings** tab.
 ![Apigee Edge NPM configuration](images/apigee-http-proxy.png)
+
 1. On the HTTP(S) Proxy page, enter the following values:
 
 	Setting | Description | Default for Public Cloud
