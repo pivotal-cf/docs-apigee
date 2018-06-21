@@ -160,7 +160,7 @@ bearer token.
     1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
 	
         <pre class="terminal">$ ./get\_token</pre>  
-       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](http://docs.apigee.com/api-services/content/using-oauth2-security-apigee-edge-management-api).
+       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](https://docs.apigee.com/api-platform/system-administration/using-oauth2).
 
         > You may be prompted for your Apigee Edge username and password, and an MFA token. This updates the token in the ~/.sso-cli/valid\_token.dat file (if that subdirectory exists – otherwise the file is placed in the current working directory). The next step uses this token.
 
@@ -182,7 +182,7 @@ bearer token.
     Target application protocol | The application protocol, such as http or https.
     Service instance name to bind to | Required. Name of the Apigee service to bind to.
 
-## apigee-bind-org reference
+### apigee-bind-org reference
 
 Use the `apigee-bind-org` command to generate an API proxy on Apigee Edge and to bind the Cloud Foundry service to the proxy.
 
@@ -217,10 +217,9 @@ Parameter | Purpose | Allowed Values
 `pass` | Apigee password. Not used if you pass a bearer token with the --bearer argument. | Your password.
 `protocol` | The protocol through which the proxy should be accessed by Cloud Foundry | `http` or `https`; default is `https`.
 `service` | Required. Name of the Apigee service to bind to. | The service name.
-`target_app_route` | The URL for your Cloud Foundry app. | The app URL.
 `user` | Apigee user name. Not used if you pass a bearer token with the --bearer argument. | Your user name.
 
-## <a id="test-binding"></a>Step 4: Test the Binding
+## <a id="test-binding"></a>Step 5: Test the Binding
 
 Once you've bound your app's path to the Apigee service (creating an Apigee proxy in the process), you can try it out with the sample app you invoked earlier.
 
