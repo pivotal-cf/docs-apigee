@@ -7,116 +7,98 @@ owner: Partners
 
 This topic describes how to push a sample app to Pivotal Cloud Foundry (PCF), create an Apigee Edge service instance, and bind the application to it. After binding the application to the Apigee Edge service instance, requests to the app will be forwarded to an Apigee Edge API proxy for management.
 
-Before performing the procedures in this topic, you must [install and configure](installing.html) the Apigee Edge Service Broker for PCF tile.
-
-> Steps in these instructions use CF CLI with an Apigee plugin. To see corresponding CF CLI commands, see [Mapping for Apigee and Cloud Foundry integration commands](https://github.com/apigee/cloud-foundry-apigee/tree/master/docs/mapping-apigee-cf-cli.md).
+Before performing the procedures in this topic, you must [install and configure](install-and-configure-apigee-service-broker) the Apigee Edge Service Broker for PCF tile.
 
 ## <a id="push-sample"></a>Step 1: Push the Sample App
 
-Perform the following steps to push a sample application to PCF. 
+Perform the following steps to push a sample application to PCF.
 
 1. Clone the Apigee Edge GitHub repo:
-    <pre class="terminal">$ git clone <span>https:</span>//github.com/apigee/cloud-foundry-apigee.git</pre>
+
+    ```bash
+    $ git clone https://github.com/apigee/cloud-foundry-apigee.git
+    ```
 
 1. Change into the `sample-api` directory of the cloned repo:
-    <pre class="terminal">$ cd cloud-foundry-apigee/samples/org-and-microgateway-sample</pre>
+
+    ```bash
+    $ cd cloud-foundry-apigee/samples/org-and-microgateway-sample</pre>
+    ```
 
 1. In the `org-and-microgateway-sample` directory, open `manifest.yml`.
 
 1. Edit `manifest.yml` to change the `name` and `host` properties to values specific to your deployment. See the following example:
 
-    ```
-    applications: 
-    - name: sample-api 
-      memory: 128M 
-      instances: 1 
-      host: sample-api-apigee 
-      path: . 
+    ```yaml
+    applications:
+    - name: sample-api
+      memory: 128M
+      instances: 1
+      host: sample-api-apigee
+      path: .
       buildpack: nodejs_buildpack
     ```
 1. Save the edited file.
 
 1. Set your API endpoint to the Cloud Controller of your deployment.
-  <pre class="terminal">
+
+  ```bash
   $ cf api api.YOUR-SYSTEM-DOMAIN
   Setting api endpoint to api.YOUR-SYSTEM-DOMAIN...
   OK
-  API endpoint:  <span>https:</span>//api.YOUR-SYSTEM-DOMAIN (API version: 2.59.0)
+  API endpoint:  https://api.YOUR-SYSTEM-DOMAIN (API version: 2.59.0)
   Not logged in. Use 'cf login' to log in.
-  </pre>
+  ```
 
 1. Log in to your deployment and select an org and a space.
-  <pre class="terminal">
+
+  ```bash
   $ cf login
-  API endpoint: <span>https:</span>//api.YOUR-SYSTEM-DOMAIN
-  Email> user<span>@</span>example.com
+  API endpoint: https://api.YOUR-SYSTEM-DOMAIN
+  Email> user@example.com
   Password>
-  </pre>
+  ```
 
 1. Push the sample app to PCF:
-    <pre class="terminal">$ cf push YOUR-SAMPLE-APP</pre>
+
+    ```bash
+    $ cf push YOUR-SAMPLE-APP
+    ```
 
 1. Use `curl` to send a test request to the app you pushed:
-    <pre class="terminal">
+
+    ```bash
     $ curl YOUR-SAMPLE-APP.YOUR-SYSTEM-DOMAIN
-    {"hello":"hello from cf app"} 
-    </pre>
+    {"hello":"hello from cf app"}
+    ```
     If you receive the above response, the sample app is running successfully.
 
-## <a name="instance"></a>Step 2: Install the plugin
-
-1. Install the Apigee Broker Plugin as follows.
-    <pre class="terminal">
-    $ cf install-plugin -r CF-Community "apigee-broker-plugin"                                                                                                                                 
-    Searching CF-Community for plugin apigee-broker-plugin...
-    Plugin apigee-broker-plugin 0.1.1 found in: CF-Community
-    Attention: Plugins are binaries written by potentially untrusted authors.
-    Install and use plugins at your own risk.
-    Do you want to install the plugin apigee-broker-plugin? [yN]: y
-    Starting download of plugin binary from repository CF-Community...
-    7.85 MiB / 7.85 MiB [===========================================================================================================================================================================================================================================] 100.00% 11s
-    Installing plugin Apigee-Broker-Plugin...
-    OK
-    Plugin Apigee-Broker-Plugin 0.1.1 successfully installed.
-    </pre>
-
-1. Make sure the plugin is available by running the following command:
-
-    <pre class="terminal">
-    $ cf -h
-    …
-    Commands offered by installed plugins:
-      apigee-bind-mg,abm      apigee-unbind-mgc,auc    enable-diego
-      apigee-bind-mgc,abc     apigee-unbind-org,auo    has-diego-enabled
-      apigee-bind-org,abo     dea-apps                 migrate-apps
-      apigee-push,ap          diego-apps               dev,pcfdev
-      apigee-unbind-mg,aum    disable-diego
-    </pre>
-
-## <a id="create-instance"></a>Step 3: Create a Service Instance
+## <a id="create-instance"></a>Step 2: Create a Service Instance
 
 Perform the following steps to create an instance of the Apigee Edge service:
 
 1. List the Marketplace services and locate the Apigee Edge service:
 
-    <pre class="terminal">
+    ```bash
     $ cf marketplace
-    Getting services from marketplace in org example / space development as user<span>@</span>example.com...
+    Getting services from marketplace in org example / space development as user@example.com...
     OK
 
     service          plans                                              description
     apigee-edge      org, microgateway, microgateway-coresident         Apigee Edge API Platform
-    </pre>
+    ```
 
 1. Create an instance of the Apigee Edge service. Select either the `org` service plan.
 
-    <pre class="terminal">$ cf create-service apigee-edge org YOUR-SERVICE-INSTANCE -c \
+    ```bash
+    $ cf create-service apigee-edge org YOUR-SERVICE-INSTANCE -c \
     '{"org":"YOUR-ORG", "env":"YOUR-ENV"}'
-cf service YOUR-SERVICE-INSTANCE</pre>
+    cf service YOUR-SERVICE-INSTANCE
+    ```
 
 1. Use the `cf service` command to display information about the service instance:
 
-    <pre class="terminal">
+    ```bash
     $ cf service apigee-service
 
     Service instance: apigee-service
@@ -133,91 +115,96 @@ cf service YOUR-SERVICE-INSTANCE</pre>
     Message:
     Started: 2016-10-27T20:47:43Z
     Updated:
-    </pre>
+    ```
 
-## <a id="bind-app-route"></a>Step 4: Bind the App Route to the Service Instance
+## <a id="bind-app-route"></a>Step 3: Bind the App Route to the Service Instance
 
+In this step, you bind a Cloud Foundry app's route (its address in Cloud Foundry) to the Apigee service instance you created. That way, requests to the app will be forwarded first to an Edge proxy. The `bind-route-service` command creates the proxy for you and binds the route to it.
 
-Perform the following steps to bind the route of your app to your Apigee Edge service instance.
+Each bind attempt requires authorization with Edge, passed as additional parameters to the `cf` bind command.
 
-Each bind attempt requires authorization with Apigee Edge, with credentials 
-passed as additional parameters to the `apigee-bind-org` command. You can pass 
-these credentials as arguments of the `apigee-bind-org` command or by using a 
-bearer token.
+1. Get or update the token using the Apigee SSO CLI script.
 
-1. If you're using a bearer token to authenticate with Apigee Edge, get or 
-   update the token using the Apigee SSO CLI script.    (If you're instead using command-line arguments to authenticate with username and password, specify the credentials in the next step.)
-   
     1. Download the Apigee Edge scripts:
-   
-        <pre class="terminal">$ curl <span>https:</span>//login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"</pre>
+
+        ```bash
+        $ curl https://login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"
+        ```
     1. Unzip the `ssocli-bundle.zip` file. This includes `get_token`, a script that gets or updates a token that you use to authenticate with your Apigee Edge organization. You need this token to bind the Apigee Edge route service to your app.
 
-        <pre class="terminal">$ tar xvf ssocli-bundle.zip</pre>
+        ```bash
+        $ tar xvf ssocli-bundle.zip
+        ```
     1. Create a `.sso-cli` directory in your user directory:
-	
-        <pre class="terminal">$ mkdir ~/.sso-cli</pre>
+
+        ```bash
+        $ mkdir ~/.sso-cli
+        ```
     1. Use the `get_token` script to create a token. When prompted, enter the Apigee Edge username and password you use to log in to your organization.
-	
-        <pre class="terminal">$ ./get\_token</pre>  
-       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](https://docs.apigee.com/api-platform/system-administration/using-oauth2).
 
-        > You may be prompted for your Apigee Edge username and password, and an MFA token. This updates the token in the ~/.sso-cli/valid\_token.dat file (if that subdirectory exists – otherwise the file is placed in the current working directory). The next step uses this token.
+        ```bash
+        $ ./get\_token
+        ```
+       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](/api-platform/system-administration/using-oauth2).
 
-1. Bind the app to the Apigee service instance with the `apigee-bind-org` command.
+        > You may be prompted for your Apigee Edge username and password, and an MFA token. This updates the token in the ~/.sso-cli/valid\_token.dat file (if that subdirectory exists – otherwise the file is placed in the current working directory).
 
-    When you use the command without arguments, you'll be prompted for argument values. To use the command with arguments, see the command reference at the end of this topic. For help on the command, type `cf apigee-bind-org -h`. Without arguments, you'll be prompted for the following:
+1. Bind the app's route to the Apigee service instance with the domain and hostname.
 
-    Argument | Description
-    --- | ---
-    Apigee username | Apigee user name. Not used if you pass a bearer token with the `--bearer` argument.
-    Apigee password | Apigee password. Not used if you pass a bearer token with the `--bearer` argument.
-    Action to take | Required. `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
-    Apigee environment | Required. The Apigee environment where your proxy should be deployed.
-    Apigee organization | Required. The Apigee organization where your proxy should be created.
-    Application to bind to | Required. Name of the the Cloud Foundry application to bind to.
-    Domain to bind to | Required. Domain of the application to bind to.
-    Route of the application acting as microgateway | Required. Route of the application acting as Edge Microgateway.
-	Host | The host domain to which API calls are made. Specify a value only if your host domain is not the same as that given by your virtual host.
-    Target application protocol | The application protocol, such as http or https.
-    Service instance name to bind to | Required. Name of the Apigee service to bind to.
+    Use the [`bind-route-service`](#bind-route-service-reference) command. The following example does two things: it creates an API proxy on the `myorg` org and `test` environment, then binds the Apigee route service to the proxy. The protocol parameter specifies the protocol through which the proxy will be called. To do its works, this command authenticates with Apigee Edge using the token in the specified .dat file:
 
-### apigee-bind-org reference
+    ```bash
+    $ cf bind-route-service local.pcfdev.io myapigee --hostname test-app \
+    -c '{"org":"myorg","env":"test",
+      "bearer":"'$(cat ~/.sso-cli/valid_token.dat)'",
+      "action":"proxy bind",
+      "protocol":"https"}'
+    ```
 
-Use the `apigee-bind-org` command to generate an API proxy on Apigee Edge and to bind the Cloud Foundry service to the proxy.
+1. Log into Edge and note that the proxy has been created, and that requests to your app are being routed through Edge.
 
-The command requires your Apigee Edge credentials in order to create and bind to an API proxy. You can specify credentials either with a bearer token or by 
-giving a username and password at the command line. To use a token, you must 
-provide the `--bearer` argument. To be prompted for argument values (and provide a username and password at prompts), use the command without arguments. 
+    You will find a proxy whose name matches the pattern specified by the APIGEE_PROXY_NAME_TEMPLATE variable you specified with your org and env mapping in the manifest. The proxy has been deployed to the environment you specified when you created your service instance.
 
+    In the Edge management console, begin tracing the proxy, then send requests to your app. Trace will show the traffic routing through the proxy.
+
+    You can now configure standard Apigee Edge policies on that proxy.
+
+### bind-route-service reference
+Use the `bind-route-service` command to generate an API proxy on Apigee Edge and to bind the Apigee Cloud Foundry service to the proxy. The command this form (be sure to use quotes and command expansion, as shown here):
+
+```bash
+$ cf bind-route-service <your-app-domain> <service-instance> [--hostname <hostname>] \
+-c '{"org":"<your edge org>","env":"<your edge env>",
+  "bearer":"'<authentication-token-file>'" | "basic":"<encoded-username-password>" | "<username>:<password>",
+  "action":"proxy"|"bind"|"proxy bind",
+  ["protocol":"http"|"https"]}'
 ```
-cf apigee-bind-org
-```
 
-To specify arguments on the command line, use the following syntax (be sure to 
-use quotes and command expansion, as shown here):
-
-<pre class="terminal">
-$ cf apigee-bind-org [--app APP_NAME] [--service SERVICE_INSTANCE] \
-    [--apigee_org APIGEE_ORGANIZATION] [--apigee_env APIGEE_ENVIRONMENT] \ 
-    [--protocol TARGET_APP_PROTOCOL] [--domain APP_DOMAIN] [--action ACTION] \
-    [--user APIGEE_USERNAME] [--pass APIGEE_PASSWORD] \
-    [--bearer APIGEE_BEARER_TOKEN] [--host HOST_NAME]
-</pre>
+Parameters for the `-c` argument specify connection details:
 
 Parameter | Purpose | Allowed Values
 ---- | ---- | ----
-`action` | Required. A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
-`apigee_env` | Required. Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
-`apigee_org` | Required. Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in the `bearer` parameter)
-`app` | Required. Name of the the Cloud Foundry application to bind to. | The app name.
+`org` | Apigee Edge organization hosting the API proxy to be called |  Your organization (must be reachable via the authentication token specified in the `bearer` parameter)
+`env` | Apigee Edge environment to which the API proxy is (or will be) deployed | Your environment.
 `bearer` | Path to a file containing an authentication token valid for your organization | An authentication token, such as one generated with Apigee's get_token command. The broker does not store any data; it requires credentials and other parameters for each individual `cf` command. Instead of a `bearer` token, credentials can also be expressed as:<ul><li>`basic`: standard HTTP Base-64 encoded username and password for `Authorization: Basic`. Note that this is *not encrypted* and easily converted to clear text. But a jumble of digits and letters may provide some protection in case of momentary exposure (but no better than if the password is already a jumble of digits, letters, and symbols)</li><li>username and password in clear text</li></ul>
-`domain` | Required. Domain of the application to bind to. | 
-`host` | The host domain to which API calls are made. Specify a value only if your host domain is not the same as that given by your virtual host. | Your host domain name if different from your virtual host domain. For example: mycompany.net:9000
-`pass` | Apigee password. Not used if you pass a bearer token with the --bearer argument. | Your password.
+`action` | A value specifying whether to create or bind an API proxy | `proxy` to generate an API proxy; `bind` to bind the service with the proxy; `proxy bind` to generate the proxy and bind with a single command.
 `protocol` | The protocol through which the proxy should be accessed by Cloud Foundry | `http` or `https`; default is `https`.
-`service` | Required. Name of the Apigee service to bind to. | The service name.
-`user` | Apigee user name. Not used if you pass a bearer token with the --bearer argument. | Your user name.
+`host` | The host domain to which API calls are made. Specify a value only if your host domain is not the same as that given by your virtual host. | Your host domain name if different from your virtual host domain. For example: mycompany.net:9000
+
+## Unbinding the route service
+
+The unbind command does not accept any parameters
+
+```bash
+$ cf unbind-route-service <your-app-domain> <service-instance> --hostname <cf-app>
+```
+
+## Uninstalling the service instance and broker
+
+```bash
+$ cf delete-service <service-instance>
+$ cf delete-service-broker apigee-edge
+```
 
 ## <a id="test-binding"></a>Step 5: Test the Binding
 
@@ -228,13 +215,14 @@ Once you've bound your app's path to the Apigee service (creating an Apigee prox
 1. Click the new proxy's name to view its **Overview** page.
 1. Click the **Trace** tab, then click the **Start Trace Session** button.
 1. Back at the command line, run the `curl` command you ran earlier to make a request to your Cloud Foundry app you pushed, such as:
-  <pre class="terminal">
-  $ curl <span>https:</span>//sample-api-apigee.cfapps.pivotal.io 
-  {"hello":"hello from cf app"} 
-  </pre>
+
+  ```bash
+  $ curl https://sample-api-apigee.cfapps.pivotal.io
+  {"hello":"hello from cf app"}
+  ```
+
   As before, the console outputs the app's response.
 
 1. Return to the Apigee Edge management console to see that your request has now been routed through the Edge proxy you created.
-
 
 The new proxy is just a pass-through, but it is now ready for you or someone on your team to add policies to define security, traffic management, and more.
