@@ -7,7 +7,7 @@ owner: Partners
 
 This topic describes how to push a sample app to Pivotal Cloud Foundry (PCF), create an Apigee Edge service instance, and bind the application to it. After binding the application to the Apigee Edge service instance, requests to the app will be forwarded to an Apigee Edge API proxy for management.
 
-Before performing the procedures in this topic, you must [install and configure](install-and-configure-apigee-service-broker) the Apigee Edge Service Broker for PCF tile.
+Before performing the procedures in this topic, you must install and configure the Apigee Edge Service Broker for PCF tile.
 
 ## <a id="push-sample"></a>Step 1: Push the Sample App
 
@@ -145,7 +145,7 @@ Each bind attempt requires authorization with Edge, passed as additional paramet
         ```bash
         $ ./get\_token
         ```
-       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](/api-platform/system-administration/using-oauth2).
+       The `get_token` script writes the token file into `~/.sso-cli`. For more about `get_token`, see the [Apigee documentation](https://docs.apigee.com/api-platform/system-administration/using-oauth2).
 
         > You may be prompted for your Apigee Edge username and password, and an MFA token. This updates the token in the ~/.sso-cli/valid\_token.dat file (if that subdirectory exists – otherwise the file is placed in the current working directory).
 
