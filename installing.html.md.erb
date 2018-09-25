@@ -7,6 +7,7 @@ owner: Partners
 
 This topic describes how to install and configure the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF).
 
+
 ## <a id='install'></a> Install and Configure the Apigee Edge Service Broker for PCF
 
 1. Download the product file from [Pivotal Network](http://network.pivotal.io).
@@ -22,17 +23,16 @@ This topic describes how to install and configure the Apigee Edge Service Broker
     Note the **Add** button in the top left. This allows for the addition of any number of specific configurations to be added to the tile.
 
 1. Under **Custom Settings**, enter the appropriate values. See the following table for a description of each setting and the default values for users of Apigee Edge for Public Cloud.
-
-	Setting | Description | Default for Public Cloud
-	------- | ----------- | ------------------------
-	**Name for this configuration** | Choose a name that describes the configuration. | Default configuration
-	**Apigee Organization** | The Apigee Edge organization with proxies that will handle calls to your app. | 
-	**Apigee Environment** | The Apigee Edge environment that with proxies that will handle calls to your app. | 
-	**Dashboard URL** | The URL to the Apigee Edge management console, the UI where you develop and manage API proxies. | `https://enterprise.apigee.com/platform/#/`
-	**Apigee Management API URL** | The endpoint URL to the Apigee Edge management API. The Apigee Edge Service Broker uses this URL when making requests to create new Apigee Edge API proxies for managing requests to PCF apps. | `https://api.enterprise.apigee.com/v1`
-	**Apigee Proxy Domain** | The domain name that PCF apps use when making calls to your API proxy. | `apigee.net`
-	**Apigee Proxy Host Template** | ES6 template literal for generated proxy host. The template that describes how the Apigee Edge host name should be generated. <br/> This represents the hostname that clients use to make calls to your APIs. Change this value if your hostname is not created in the default way -- from your Apigee org an environment names. For example, if your APIs use a custom virtual host, you might have just a domain name:<br/>`${domain}`<br />Pivotal Cloud Foundry apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the PCF app to the service. (Note that without any placeholders, will be used as-is.)| `${org}-${env}.${domain}`
-	**Apigee Proxy Name Template** | The template that describes how to generate the name of your proxy when you create it from the cf CLI. | `cf-${route}`
+| Setting | Description | Default for Public Cloud |
+| ------- | ----------- | ------------------------ |
+| **Name for this configuration** | Choose a name that describes the configuration. | Default configuration |
+| **Apigee Organization** | The Apigee Edge organization with proxies that will handle calls to your app. | 
+| **Apigee Environment** | The Apigee Edge environment that with proxies that will handle calls to your app. | 
+| **Dashboard URL** | The URL to the Apigee Edge management console, the UI where you develop and manage API proxies. | `https://enterprise.apigee.com/platform/#/` |
+| **Apigee Management API URL** | The endpoint URL to the Apigee Edge management API. The Apigee Edge Service Broker uses this URL when making requests to create new Apigee Edge API proxies for managing requests to PCF apps. | `https://api.enterprise.apigee.com/v1` |
+| **Apigee Proxy Domain** | The domain name that PCF apps use when making calls to your API proxy. | `apigee.net` |
+| **Apigee Proxy Host Template** | ES6 template literal for generated proxy host. The template that describes how the Apigee Edge host name should be generated. <br/> This represents the hostname that clients use to make calls to your APIs. Change this value if your hostname is not created in the default way -- from your Apigee org an environment names. For example, if your APIs use a custom virtual host, you might have just a domain name:<br/>`${domain}`<br />Pivotal Cloud Foundry apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the PCF app to the service. (Note that without any placeholders, will be used as-is.)| `${org}-${env}.${domain}` |
+| **Apigee Proxy Name Template** | The template that describes how to generate the name of your proxy when you create it from the cf CLI. | `cf-${route}` |
 
 1. Click **Save**.
 
@@ -40,13 +40,12 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 ![Apigee Edge NPM configuration](images/apigee-npm-config.png)
 
 1. On the NPM configuration page, enter the following values:
-
-	Setting | Description | Default for Public Cloud
-	------- | ----------- | ------------------------
-	**npm registry URL** | The base URL of the NPM package registry. | 
-	**npm registry client certificate** | A client certificate to pass when accessing the registry. Values should be in PEM format (or on Windows, "Base-64 encoded X.509 (.CER)"). Replace newlines with the string "\n". For example:<br /> `cert="-----BEGIN CERTIFICATE-----\nXXXX\nXXXX\n-----END CERTIFICATE-----"` <br />This is not the path to a certificate file. |
-	**npm registry client key** | A client key to pass when accessing the registry. Values should be in PEM format with newlines replaced by the string "\n". For example:<br /> `key="-----BEGIN PRIVATE KEY-----\nXXXX\nXXXX\n-----END PRIVATE KEY-----"` <br />It is not the path to a key file (and there is no "keyfile" option). | 
-	**Use strict-ssl** | `true` to do SSL key validation when making requests to the registry via HTTPS. | Selected (`true`).
+| Setting | Description | Default for Public Cloud
+| ------- | ----------- | ------------------------
+| **npm registry URL** | The base URL of the NPM package registry. | 
+| **npm registry client certificate** | A client certificate to pass when accessing the registry. Values should be in PEM format (or on Windows, "Base-64 encoded X.509 (.CER)"). Replace newlines with the string "\n". For example:<br /> `cert="-----BEGIN CERTIFICATE-----\nXXXX\nXXXX\n-----END CERTIFICATE-----"` <br />This is not the path to a certificate file. |
+| **npm registry client key** | A client key to pass when accessing the registry. Values should be in PEM format with newlines replaced by the string "\n". For example:<br /> `key="-----BEGIN PRIVATE KEY-----\nXXXX\nXXXX\n-----END PRIVATE KEY-----"` <br />It is not the path to a key file (and there is no "keyfile" option). | 
+| **Use strict-ssl** | `true` to do SSL key validation when making requests to the registry via HTTPS. | Selected (`true`). |
 
 1. Click **Save**.
 
@@ -54,15 +53,14 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 ![Apigee Edge NPM configuration](images/apigee-http-proxy.png)
 
 1. On the HTTP(S) Proxy page, enter the following values:
-
-	Setting | Description | Default for Public Cloud
-	------- | ----------- | ------------------------
-	**HTTPS proxy URL** | The URL required by the `https_proxy` environment variable. | 
-	**HTTPS proxy username** | The username required by the `https_proxy` environment variable. | 
-	**HTTPS proxy password** | The password required by the `https_proxy` environment variable. | 
-	**HTTP proxy URL** | The URL required by the `http_proxy` environment variable. | 
-	**HTTP proxy username** | The username required by the `http_proxy` environment variable. | 
-	**HTTP proxy password** | The password required by the `http_proxy` environment variable. | 
+| Setting | Description | Default for Public Cloud |
+| ------- | ----------- | ------------------------ |
+| **HTTPS proxy URL** | The URL required by the `https_proxy` environment variable. | 
+| **HTTPS proxy username** | The username required by the `https_proxy` environment variable. | 
+| **HTTPS proxy password** | The password required by the `https_proxy` environment variable. | 
+| **HTTP proxy URL** | The URL required by the `http_proxy` environment variable. | 
+| **HTTP proxy username** | The username required by the `http_proxy` environment variable. | 
+| **HTTP proxy password** | The password required by the `http_proxy` environment variable. | 
 
 1. Click **Save**.
 
