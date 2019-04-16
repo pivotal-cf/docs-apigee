@@ -23,7 +23,9 @@ This topic describes how to install and configure the Apigee Edge Service Broker
     Note the **Add** button in the top left. This allows for the addition of any number of specific configurations to be added to the tile.
 
 1. Under **Custom Settings**, enter the appropriate values. See the following table for a description of each setting and the default values for users of Apigee Edge for Public Cloud.
-| Setting | Description | Default for Public Cloud |
+
+
+    | Setting | Description | Default for Public Cloud |
 | ------- | ----------- | ------------------------ |
 | **Name for this configuration** | Choose a name that describes the configuration. | Default configuration |
 | **Apigee Organization** | The Apigee Edge organization with proxies that will handle calls to your app. | 
@@ -39,8 +41,9 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 1. If you have your own NPM registry that the service broker should use to install, click **NPM Configuration** in the **Settings** tab.
 ![Apigee Edge NPM configuration](images/apigee-npm-config.png)
 
-1. On the NPM configuration page, enter the following values:
-| Setting | Description | Default for Public Cloud
+9. On the NPM configuration page, enter the following values:
+
+    | Setting | Description | Default for Public Cloud
 | ------- | ----------- | ------------------------
 | **npm registry URL** | The base URL of the NPM package registry. | 
 | **npm registry client certificate** | A client certificate to pass when accessing the registry. Values should be in PEM format (or on Windows, "Base-64 encoded X.509 (.CER)"). Replace newlines with the string "\n". For example:<br /> `cert="-----BEGIN CERTIFICATE-----\nXXXX\nXXXX\n-----END CERTIFICATE-----"` <br />This is not the path to a certificate file. |
@@ -52,8 +55,9 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 1. If you have a proxy server or firewall for calls from the service broker, click **HTTP(S) Proxy** in the **Settings** tab.
 ![Apigee Edge NPM configuration](images/apigee-http-proxy.png)
 
-1. On the HTTP(S) Proxy page, enter the following values:
-| Setting | Description | Default for Public Cloud |
+12. On the HTTP(S) Proxy page, enter the following values:
+
+    | Setting | Description | Default for Public Cloud |
 | ------- | ----------- | ------------------------ |
 | **HTTPS proxy URL** | The URL required by the `https_proxy` environment variable. | 
 | **HTTPS proxy username** | The username required by the `https_proxy` environment variable. | 
