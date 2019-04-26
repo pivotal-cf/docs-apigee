@@ -3,11 +3,11 @@ title: Apigee Edge Service Broker for Pivotal Cloud Foundry
 owner: Partners
 ---
 
+
+This tile requires a Xenial stemcell.
 <p class="note warning"><strong> WARNING:</strong>
-This tile requires a Trusty stemcell.
 The end-of-life date for Ubuntu Trusty is April 2019.
 If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
-
 <strong><%= modified_date %></strong>
 
 This documentation describes the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF). The Apigee Edge Service Broker for PCF enables developers to proxy APIs for their PCF apps.
@@ -49,6 +49,34 @@ The following table provides version and version-support information about Apige
 <table class="nice">
     <th>Element</th>
     <th>Details</th>
+        <tr>
+        <td>Version</td>
+        <td>v3.1.2</td>
+    </tr>
+    <tr>
+        <td>Release date</td>
+        <td>April 26, 2019</td>
+    </tr>
+    <tr>
+        <td>Software component version</td>
+        <td>Apigee Edge Service Broker for PCF v3.1.2</td>
+    </tr>
+    <tr>
+        <td>Compatible Ops Manager version(s)</td>
+        <td>v2.3.x, 2.4.x, 2.5.x</td>
+    </tr>
+    <tr>
+        <td>Compatible Pivotal Application Service version(s)</td>
+        <td>v2.3.x, 2.4.x, 2.5.x</td>
+    </tr>
+    <tr>
+        <td>BOSH stemcell version</td>
+        <td>Ubuntu Xenial</td>
+    </tr>
+    <tr>
+        <td>IaaS support</td>
+        <td>vSphere</td>
+    </tr>
     <tr>
         <td>Version</td>
         <td>v3.1.1</td>
@@ -103,7 +131,7 @@ The Apigee Edge Service Broker for PCF has the following prerequisites:
 
 * An Apigee Edge account (Public Cloud or Private Cloud) with an organization where API proxies can be created. To create an Edge account, see [Creating an Apigee Edge account](http://docs.apigee.com/api-services/content/creating-apigee-edge-account). For more information about Apigee organizations, see [Organization structure](http://docs.apigee.com/api-services/content/apigee-edge-organization-structure).
 * Apigee Edge Microgateway, depending on the service plan you are using.
-* A PCF Elastic Runtime (v2.1 to v2.2) deployment with Route Services enabled.
+* A PCF Elastic Runtime (v2.3 to v2.5) deployment with Route Services enabled.
 * A PAS Pivotal Application Services deployment for PCF v2.1.0 or later with Route Services enabled.
 * The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0 or later, which includes  support for `route-services` operations.
 * Node.js v4.x or later. PCF includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
