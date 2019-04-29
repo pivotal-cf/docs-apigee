@@ -55,7 +55,7 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 1. If you have a proxy server or firewall for calls from the service broker, click **HTTP(S) Proxy** in the **Settings** tab.
 ![Apigee Edge NPM configuration](images/apigee-http-proxy.png)
 
-12. On the HTTP(S) Proxy page, enter the following values:
+1. On the HTTP(S) Proxy page, enter the following values:
 
     | Setting | Description | Default for Public Cloud |
 | ------- | ----------- | ------------------------ |
@@ -69,6 +69,16 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 1. Click **Save**.
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install the Apigee Edge Service Broker for PCF tile.
+
+1. If you are upgrading Apigee Edge Service Broker for PCF tile and installation failed you may need to remove old service broker application from PCF and re-run installation again by pressing **Apply Changes** in Ops Manager:
+
+```
+cf target -o apigee-edge-for-pcf-service-broker-org -s apigee-edge-for-pcf-service-broker-space
+cf apps
+cf delete apigee-cf-service-broker-3.1.1
+```
+where `apigee-cf-service-broker-3.1.1` name of old broker application
+
 
 The Apigee Edge service broker is now installed in your PCF deployment. To use the service broker, continue to one of the following topics:
 
