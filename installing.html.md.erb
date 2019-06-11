@@ -85,3 +85,12 @@ The Apigee Edge service broker is now installed in your PCF deployment. To use t
 - To learn how to proxy a Cloud Foundry app with Apigee Edge, see [Proxying a PCF App with Apigee Edge ("org" plan)](proxying-org.html).
 - To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in separate Cloud Foundry containers, see [Proxying a PCF App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html) topic to learn how to create and use an Apigee Edge API proxy for PCF apps.
 - To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in the same Cloud Foundry container, see [Proxying a PCF App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html) topic to learn how to create and use an Apigee Edge API proxy for PCF apps.
+
+## <a id='install-disconnected'></a> Install the Apigee Edge Service Broker for PCF in disconnected environment
+This topic describes how to install the Apigee Edge Service Broker for Pivotal Cloud Foundry (PCF) in disconnected environment.
+
+1. Before install Apigee Edge Service Broker for PCF you need to set proxy for application staging. *NOTE: this is global configuration for PCF foundation*
+```
+$ cf set-staging-environment-variable-group '{"http_proxy": "http://YOUR-PROXY:8080/", "https_proxy": "http://YOUR-PROXY:8080/", "no_proxy": "NO-PROXY.EXAMPLE.COM"}'
+```
+1. Whitelist following URLs on yout proxy server for Apigee Edge Service Broker for PCF staging: `nodejs.org` and `registry.npmjs.org`
