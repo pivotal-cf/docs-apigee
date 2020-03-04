@@ -1,5 +1,5 @@
 ---
-title: Apigee Edge for Pivotal Platform Architecture
+title: Apigee Edge for VMware Tanzu Architecture
 owner: Partners
 ---
 
@@ -8,14 +8,14 @@ owner: Partners
 
 ## <a id="howitworks"></a> How It Works
 
-Pivotal Platform and other versions of Cloud Foundry use service brokers to connect hosted apps to services that run externally, such as load balancers and databases. The Apigee Edge service broker lets app developers create proxies that insert Apigee Edge API management features in front of their Pivotal Platform-hosted apps.
+VMware Tanzu and other versions of Cloud Foundry use service brokers to connect hosted apps to services that run externally, such as load balancers and databases. The Apigee Edge service broker lets app developers create proxies that insert Apigee Edge API management features in front of their VMware Tanzu-hosted apps.
 
 You install the service broker by [installing the Apigee Edge product tile](installing.html) in the Ops Manager Installation Dashboard. Once the Apigee Edge service broker is installed, the service appears in the Cloud Foundry services marketplace, along with other services. This makes using Apigee on your Cloud Foundry apps straightforward and simple.
 
-Developers can then use the Cloud Foundry CLI or Pivotal Platform Apps Manager to create an instance of the Apigee Edge service and bind it to their apps. Creating a service instance creates an Apigee Edge proxy running in their development space, and binding it to an app sets up the proxy to handle API requests sent from clients.
+Developers can then use the Cloud Foundry CLI or VMware Tanzu Apps Manager to create an instance of the Apigee Edge service and bind it to their apps. Creating a service instance creates an Apigee Edge proxy running in their development space, and binding it to an app sets up the proxy to handle API requests sent from clients.
 
 The Cloud Foundry Gorouter forwards requests intended for your app to the proxy for management. After the request passes through the proxy, it proceeds to the Gorouter, which sends it on to your app.
 
 The following diagram illustrates how request data flows between your Apigee Edge proxies and Cloud Foundry apps at run time.
 
-![Apigee Edge for Pivotal Platform diagram](images/pivotal-diagram.png)
+![Apigee Edge for VMware Tanzu diagram](images/pivotal-diagram.png)

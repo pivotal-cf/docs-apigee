@@ -1,29 +1,29 @@
 ---
-title: Apigee Edge Service Broker for Pivotal Platform
+title: Apigee Edge Service Broker for VMware Tanzu
 owner: Partners
 ---
 
 <p class="note warning">
 <strong>WARNING! </strong>
-The Apigee Edge Service Broker for Pivotal Platform tile has an EOL date of 04/30/2020.
+The Apigee Edge Service Broker for VMware Tanzu tile has an EOL date of 04/30/2020.
 </p>
 
-This documentation describes the Apigee Edge Service Broker for Pivotal Platform. The Apigee Edge Service Broker for Pivotal Platform enables developers to proxy APIs for their Pivotal Platform apps.
+This documentation describes the Apigee Edge Service Broker for VMware Tanzu. The Apigee Edge Service Broker for VMware Tanzu enables developers to proxy APIs for their VMware Tanzu apps.
 
 
 ## <a id='overview'></a> Overview
 
-The Apigee Edge Service Broker for Pivotal Platform registers a service broker with Pivotal Platform and exposes its service plans on the Marketplace. Using the service broker, you can create service plan instances using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to their apps. Creating an Apigee service instance and binding it to an app creates an API proxy that handles requests for the Pivotal Platform app.
+The Apigee Edge Service Broker for VMware Tanzu registers a service broker with VMware Tanzu and exposes its service plans on the Marketplace. Using the service broker, you can create service plan instances using Apps Manager or the Cloud Foundry Command Line Interface (cf CLI) and bind them to their apps. Creating an Apigee service instance and binding it to an app creates an API proxy that handles requests for the VMware Tanzu app.
 
-Through the service broker, you can proxy calls to your Pivotal Platform app with one of two varieties of Apigee Edge:
+Through the service broker, you can proxy calls to your VMware Tanzu app with one of two varieties of Apigee Edge:
 
 - Apigee Edge Public Cloud
 
-    Calls to your Pivotal Platform app are routed first through proxies you create on [Apigee Edge](http://docs.apigee.com/api-services/content/what-apigee-edge) Public Cloud. You can use the Apigee Edge management console to configure API request handling between clients and your Pivotal Platform app.
+    Calls to your VMware Tanzu app are routed first through proxies you create on [Apigee Edge](http://docs.apigee.com/api-services/content/what-apigee-edge) Public Cloud. You can use the Apigee Edge management console to configure API request handling between clients and your VMware Tanzu app.
     
 - Apigee Edge Microgateway
 
-    Calls to your Pivotal Platform app are routed first through proxies exposed by [Apigee Edge Microgateway](http://docs.apigee.com/microgateway/latest/overview-edge-microgateway). When you use Apigee Edge Microgateway, you can specify whether you want the Microgateway instance and your Pivotal Platform app to run in the same or separate Cloud Foundry containers.
+    Calls to your VMware Tanzu app are routed first through proxies exposed by [Apigee Edge Microgateway](http://docs.apigee.com/microgateway/latest/overview-edge-microgateway). When you use Apigee Edge Microgateway, you can specify whether you want the Microgateway instance and your VMware Tanzu app to run in the same or separate Cloud Foundry containers.
     
 See [Getting Started](#getting-started) for more about each option.
 
@@ -42,7 +42,7 @@ After creating an Apigee Edge API proxy, developers can access the Apigee Edge m
 ## <a id='snapshot'></a> Product Snapshot
 
 
-The following table provides version and version-support information about Apigee Edge Service Broker for Pivotal Platform:
+The following table provides version and version-support information about Apigee Edge Service Broker for VMware Tanzu:
 
 <table class="nice">
     <th>Element</th>
@@ -57,14 +57,14 @@ The following table provides version and version-support information about Apige
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>Apigee Edge Service Broker for Pivotal Platform v3.1.4</td>
+        <td>Apigee Edge Service Broker for VMware Tanzu v3.1.4</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
         <td>2.6x, 2.7x</td>
     </tr>
     <tr>
-        <td>Compatible Pivotal Application Service version(s)</td>
+        <td>Compatible Tanzu Application Service version(s)</td>
         <td>2.6.x, 2.7x</td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ The following table provides version and version-support information about Apige
 
 To begin using the Apigee Edge Service Broker, perform the procedures in the following topics:
 
-1. [Installing and Configuring Apigee Edge for Pivotal Platform](installing.html): Install and configure the Apigee Edge Service Broker for Pivotal Platform tile to expose the Apigee Edge service plans on the Marketplace of your Pivotal Platform deployment.
+1. [Installing and Configuring Apigee Edge for VMware Tanzu](installing.html): Install and configure the Apigee Edge Service Broker for VMware Tanzu tile to expose the Apigee Edge service plans on the Marketplace of your VMware Tanzu deployment.
 
 1. Choose an Apigee Edge product type and service plan to use.
 
@@ -90,23 +90,23 @@ When creating an instance of the Apigee service, you specify one of the followin
 
 | Apigee Product | Service Plan | Description |
 | ---- | ---- | ---- |
-| Apigee Edge Public Cloud | `org` | Calls to your Pivotal Platform app will be routed through a proxy in your Apigee Edge organization. For more on getting started, see [Proxying a Pivotal Platform App with Apigee Edge ("org" plan)](proxying-org.html). |
-| Apigee Edge Microgateway (same container) | `microgateway-coresident` | Calls to your Pivotal Platform app will be routed through a proxy in an instance of Apigee Edge Microgateway running in the same Cloud Foundry container as your Pivotal Platform app. For more on getting started, see [Proxying a Pivotal Platform App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html). |
-| Apigee Edge Microgateway (separate containers) | `microgateway` | Calls to your Pivotal Platform app will be routed through a proxy in an instance of Apigee Edge Microgateway running in a separate Cloud Foundry container from your Pivotal Platform app. For more on getting started, see [Proxying a Pivotal Platform App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html). |
+| Apigee Edge Public Cloud | `org` | Calls to your VMware Tanzu app will be routed through a proxy in your Apigee Edge organization. For more on getting started, see [Proxying a VMware Tanzu App with Apigee Edge ("org" plan)](proxying-org.html). |
+| Apigee Edge Microgateway (same container) | `microgateway-coresident` | Calls to your VMware Tanzu app will be routed through a proxy in an instance of Apigee Edge Microgateway running in the same Cloud Foundry container as your VMware Tanzu app. For more on getting started, see [Proxying a VMware Tanzu App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html). |
+| Apigee Edge Microgateway (separate containers) | `microgateway` | Calls to your VMware Tanzu app will be routed through a proxy in an instance of Apigee Edge Microgateway running in a separate Cloud Foundry container from your VMware Tanzu app. For more on getting started, see [Proxying a VMware Tanzu App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html). |
 
 
 ## <a id='prereqs'></a> Prerequisites
 
-The Apigee Edge Service Broker for Pivotal Platform has the following prerequisites:
+The Apigee Edge Service Broker for VMware Tanzu has the following prerequisites:
 
 * An Apigee Edge account (Public Cloud or Private Cloud) with an organization where API proxies can be created. To create an Edge account, see [Creating an Apigee Edge account](http://docs.apigee.com/api-services/content/creating-apigee-edge-account). For more information about Apigee organizations, see [Organization structure](http://docs.apigee.com/api-services/content/apigee-edge-organization-structure).
 * Apigee Edge Microgateway, depending on the service plan you are using.
-* A Pivotal Platform Elastic Runtime (v2.3 to v2.5) deployment with Route Services enabled.
-* A PAS Pivotal Application Services deployment for Pivotal Platform v2.1.0 or later with Route Services enabled.
+* A VMware Tanzu Elastic Runtime (v2.3 to v2.5) deployment with Route Services enabled.
+* A TAS Tanzu Application Services deployment for VMware Tanzu v2.1.0 or later with Route Services enabled.
 * The [cf CLI](https://github.com/cloudfoundry/cli) v6.20.0 or later, which includes  support for `route-services` operations.
-* Node.js v4.x or later. Pivotal Platform includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
+* Node.js v4.x or later. VMware Tanzu includes Node.js as a system buildpack, so you can install and run the service broker without Node installed locally, if necessary.
 
 
 ## <a id='feedback'></a> Feedback
 
-Post any bugs, feature requests, questions, and usage articles to the [Apigee Pivotal Platform Community Forum](https://community.apigee.com/spaces/134/integration.html).
+Post any bugs, feature requests, questions, and usage articles to the [Apigee VMware Tanzu Community Forum](https://community.apigee.com/spaces/134/integration.html).

@@ -1,18 +1,18 @@
 ---
-title: Proxying a Pivotal Platform App with Apigee Edge ("org" plan)
+title: Proxying a VMware Tanzu App with Apigee Edge ("org" plan)
 owner: Partners
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push a sample app to Pivotal Platform, create an Apigee Edge service instance, and bind the application to it. After binding the application to the Apigee Edge service instance, requests to the app will be forwarded to an Apigee Edge API proxy for management.
+This topic describes how to push a sample app to VMware Tanzu, create an Apigee Edge service instance, and bind the application to it. After binding the application to the Apigee Edge service instance, requests to the app will be forwarded to an Apigee Edge API proxy for management.
 
-Before performing the procedures in this topic, you must install and configure the Apigee Edge Service Broker for Pivotal Platform tile.
+Before performing the procedures in this topic, you must install and configure the Apigee Edge Service Broker for VMware Tanzu tile.
 
 
 ## <a id="push-sample"></a> Step 1: Push the Sample App
 
-To push a sample application to Pivotal Platform, do the following:
+To push a sample application to VMware Tanzu, do the following:
 
 1. Clone the Apigee Edge GitHub repo:
     ```bash
@@ -56,7 +56,7 @@ To push a sample application to Pivotal Platform, do the following:
   Password>
   ```
 
-1. Push the sample app to Pivotal Platform:
+1. Push the sample app to VMware Tanzu:
     ```bash
     $ cf push YOUR-SAMPLE-APP
     ```

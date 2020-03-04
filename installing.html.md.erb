@@ -1,25 +1,25 @@
 ---
-title: Installing and Configuring Apigee Edge for Pivotal Platform
+title: Installing and Configuring Apigee Edge for VMware Tanzu
 owner: Partners
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to install and configure the Apigee Edge Service Broker for Pivotal Platform.
+This topic describes how to install and configure the Apigee Edge Service Broker for VMware Tanzu.
 
 
-## <a id='install'></a> Install and Configure the Apigee Edge Service Broker for Pivotal Platform
+## <a id='install'></a> Install and Configure the Apigee Edge Service Broker for VMware Tanzu
 
 1. Download the product file from [Pivotal Network](http://network.pivotal.io).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Click **Add** next to the uploaded Apigee Edge Service Broker for Pivotal Platform tile in the Ops Manager **Available Products** view to add it to your staging area.
+1. Click **Add** next to the uploaded Apigee Edge Service Broker for VMware Tanzu tile in the Ops Manager **Available Products** view to add it to your staging area.
 
-1. Click the newly-added **Apigee Edge Service Broker for Pivotal Platform** tile.
+1. Click the newly-added **Apigee Edge Service Broker for VMware Tanzu** tile.
 
 1. Under **Settings**, click **Apigee Edge Tile**.
-![Apigee Edge for Pivotal Platform configuration](images/apigee-settings-3.png)
+![Apigee Edge for VMware Tanzu configuration](images/apigee-settings-3.png)
     Note the **Add** button in the top left. This allows for the addition of any number of specific configurations to be added to the tile.
 
 1. Under **Custom Settings**, enter the appropriate values. See the following table for a description of each setting and the default values for users of Apigee Edge for Public Cloud.
@@ -31,9 +31,9 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 | **Apigee Organization** | The Apigee Edge organization with proxies that will handle calls to your app. | 
 | **Apigee Environment** | The Apigee Edge environment that with proxies that will handle calls to your app. | 
 | **Dashboard URL** | The URL to the Apigee Edge management console, the UI where you develop and manage API proxies. | `https://enterprise.apigee.com/platform/#/` |
-| **Apigee Management API URL** | The endpoint URL to the Apigee Edge management API. The Apigee Edge Service Broker uses this URL when making requests to create new Apigee Edge API proxies for managing requests to Pivotal Platform apps. | `https://api.enterprise.apigee.com/v1` |
-| **Apigee Proxy Domain** | The domain name that Pivotal Platform apps use when making calls to your API proxy. | `apigee.net` |
-| **Apigee Proxy Host Template** | ES6 template literal for generated proxy host. The template that describes how the Apigee Edge host name should be generated. <br/> This represents the hostname that clients use to make calls to your APIs. Change this value if your hostname is not created in the default way -- from your Apigee org an environment names. For example, if your APIs use a custom virtual host, you might have just a domain name:<br/>`${domain}`<br />Pivotal Platform apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the Pivotal Platform app to the service. (Note that without any placeholders, will be used as-is.)| `${org}-${env}.${domain}` |
+| **Apigee Management API URL** | The endpoint URL to the Apigee Edge management API. The Apigee Edge Service Broker uses this URL when making requests to create new Apigee Edge API proxies for managing requests to VMware Tanzu apps. | `https://api.enterprise.apigee.com/v1` |
+| **Apigee Proxy Domain** | The domain name that VMware Tanzu apps use when making calls to your API proxy. | `apigee.net` |
+| **Apigee Proxy Host Template** | ES6 template literal for generated proxy host. The template that describes how the Apigee Edge host name should be generated. <br/> This represents the hostname that clients use to make calls to your APIs. Change this value if your hostname is not created in the default way -- from your Apigee org an environment names. For example, if your APIs use a custom virtual host, you might have just a domain name:<br/>`${domain}`<br />VMware Tanzu apps use this host when making calls to your API proxy. The template generates the host name from values specified when binding the VMware Tanzu app to the service. (Note that without any placeholders, will be used as-is.)| `${org}-${env}.${domain}` |
 | **Apigee Proxy Name Template** | The template that describes how to generate the name of your proxy when you create it from the cf CLI. | `cf-${route}` |
 
 1. Click **Save**.
@@ -68,9 +68,9 @@ This topic describes how to install and configure the Apigee Edge Service Broker
 
 1. Click **Save**.
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install the Apigee Edge Service Broker for Pivotal Platform tile.
+1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install the Apigee Edge Service Broker for VMware Tanzu tile.
 
-1. If you are upgrading Apigee Edge Service Broker for Pivotal Platform tile and installation failed you may need to remove old service broker application from Pivotal Platform and re-run installation again by pressing **Apply Changes** in Ops Manager:
+1. If you are upgrading Apigee Edge Service Broker for VMware Tanzu tile and installation failed you may need to remove old service broker application from VMware Tanzu and re-run installation again by pressing **Apply Changes** in Ops Manager:
 
 ```
 cf target -o apigee-edge-for-pcf-service-broker-org -s apigee-edge-for-pcf-service-broker-space
@@ -80,17 +80,17 @@ cf delete apigee-cf-service-broker-3.1.4
 where `apigee-cf-service-broker-3.1.4` name of old broker application
 
 
-The Apigee Edge service broker is now installed in your Pivotal Platform deployment. To use the service broker, continue to one of the following topics:
+The Apigee Edge service broker is now installed in your VMware Tanzu deployment. To use the service broker, continue to one of the following topics:
 
-- To learn how to proxy a Cloud Foundry app with Apigee Edge, see [Proxying a Pivotal Platform App with Apigee Edge ("org" plan)](proxying-org.html).
-- To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in separate Cloud Foundry containers, see [Proxying a Pivotal Platform App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html) topic to learn how to create and use an Apigee Edge API proxy for Pivotal Platform apps.
-- To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in the same Cloud Foundry container, see [Proxying a Pivotal Platform App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html) topic to learn how to create and use an Apigee Edge API proxy for Pivotal Platform apps.
+- To learn how to proxy a Cloud Foundry app with Apigee Edge, see [Proxying a VMware Tanzu App with Apigee Edge ("org" plan)](proxying-org.html).
+- To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in separate Cloud Foundry containers, see [Proxying a VMware Tanzu App with Apigee Edge Microgateway ("microgateway" plan)](proxying-microgateway.html) topic to learn how to create and use an Apigee Edge API proxy for VMware Tanzu apps.
+- To learn how to proxy a Cloud Foundry app with Apigee Edge Microgateway, where Microgateway and the app are in the same Cloud Foundry container, see [Proxying a VMware Tanzu App with Apigee Edge Microgateway ("microgateway-coresident" plan)](proxying-microgateway-coresident.html) topic to learn how to create and use an Apigee Edge API proxy for VMware Tanzu apps.
 
-## <a id='install-disconnected'></a> Install the Apigee Edge Service Broker for Pivotal Platform in disconnected environment
-This topic describes how to install the Apigee Edge Service Broker for Pivotal Platform in disconnected environment.
+## <a id='install-disconnected'></a> Install the Apigee Edge Service Broker for VMware Tanzu in disconnected environment
+This topic describes how to install the Apigee Edge Service Broker for VMware Tanzu in disconnected environment.
 
-1. Before installing Apigee Edge Service Broker for Pivotal Platform you need to set proxy for application staging. *NOTE: this is global configuration for Pivotal Platform foundation*
+1. Before installing Apigee Edge Service Broker for VMware Tanzu you need to set proxy for application staging. *NOTE: this is global configuration for VMware Tanzu foundation*
 ```
 $ cf set-staging-environment-variable-group '{"http_proxy": "http://YOUR-PROXY:8080/", "https_proxy": "http://YOUR-PROXY:8080/", "no_proxy": "NO-PROXY.EXAMPLE.COM"}'
 ```
-1. Whitelist following URLs on yout proxy server for Apigee Edge Service Broker for Pivotal Platform staging: `nodejs.org` and `registry.npmjs.org`
+1. Whitelist following URLs on yout proxy server for Apigee Edge Service Broker for VMware Tanzu staging: `nodejs.org` and `registry.npmjs.org`
